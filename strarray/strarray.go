@@ -2,10 +2,6 @@
 
 package strarray
 
-import (
-	"fmt"
-)
-
 func InSliceStr(l []string, s string) bool {
 	// Returns true if s is a key in m
 	in := false
