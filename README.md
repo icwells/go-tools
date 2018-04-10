@@ -1,9 +1,14 @@
 # go-tools
 
-Commonly used GO functions
+## Commonly used GO functions (intended for personal use, but feel free to use)
 
-## strarray contains functions for working with slices and maps of strings
+### To download and install to gopath:
+	go get github.com/icwells/go-tools
 
-## iotools wraps open and create file functions with error handling
+	go install github.com/icwells/go-tools
 
-## toUTF will convert and input file to utf-8 (in-progress)
+strarray contains functions for working with slices and maps of strings 
+
+iotools wraps open and create file functions with error handling 
+
+toUTF will convert and input file to utf-8 (in-progress) 
