@@ -3,7 +3,7 @@
 package toutf
 
 import (
-	"bytes"
+	"bufio"
 	"fmt"
 	"github.com/saintfish/chardet"
 	"golang.org/x/text/encoding/charmap"
@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-func getEncoding(b []bytes) string {
+func getEncoding(b []byte) string {
 	// Returns string encoding
 	det := chardet.Detector()
 	res, err := det.DetectBest(b)
@@ -21,9 +21,10 @@ func getEncoding(b []bytes) string {
 	return res.Charset
 }
 
-func Recode(b []bytes) string {
+func Recode(b []byte) string {
 	// Returns utf-8 string
 	enc := getEncoding(b)
 	r := transform.NewReader(b, charmap.enc.NewDecoder())
-	return string(r)
+	sc := buifio.NewScanner(r)
+	return string(sc.Scan())
 }
