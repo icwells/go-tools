@@ -23,8 +23,10 @@ func getEncoding(b []byte) string {
 
 func Recode(b []byte) string {
 	// Returns utf-8 string
+	ret := []byte
 	enc := getEncoding(b)
 	r := transform.NewReader(b, charmap.enc.NewDecoder())
 	sc := bufio.NewScanner(r)
-	return string(sc.Scan())
+	sc.Read(ret)
+	return string(ret)
 }
