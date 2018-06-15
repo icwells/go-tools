@@ -26,7 +26,7 @@ func CreateFile(file string) *os.File {
 	return f
 }
 
-func writeToCSV(outfile, header string, results []string) {
+func WriteToCSV(outfile, header string, results [][]string) {
 	// Writes slice of slices to file
 	out := CreateFile(outfile)
 	defer out.Close()
@@ -37,5 +37,8 @@ func writeToCSV(outfile, header string, results []string) {
 	for _, i := range results {
 		// Write comma seperated items to file
 		_, err := out.WriteString(strings.Join(i, ",") + "\n")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "[ERROR] Writing line to %s: %v\n", outfile, err)
+		}
 	}
 }
