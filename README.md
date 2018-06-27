@@ -16,6 +16,11 @@ InSliceStr(l []string, s string) bool
 
 Returns true if s is in l.  
 
+#### InSliceSli
+InSliceSli(l [][]string, s string, c int) bool  
+
+Returns true if s is in column c in l  
+
 #### InMapStr  
 InMapStr(m map[string]string, s string) bool  
 

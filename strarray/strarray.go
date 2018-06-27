@@ -3,10 +3,22 @@
 package strarray
 
 func InSliceStr(l []string, s string) bool {
-	// Returns true if s is a key in m
+	// Returns true if s is in l
 	in := false
 	for _, i := range l {
 		if s == i {
+			in = true
+			break
+		}
+	}
+	return in
+}
+
+func InSliceSli(l [][]string, s string, c int) bool {
+	// Returns true if s is in column c in l
+	in := false
+	for _, i := range l {
+		if s == i[c] {
 			in = true
 			break
 		}
