@@ -31,6 +31,17 @@ InMapSli(m map[string][]string, s string) bool
 
 Returns true if s is in m keys. 
 
+
+#### InMapMapStr  
+InMapMapStr(m map[string]map[string]string, s string) bool  
+
+Returns true if s is a key in outer map.  
+
+#### InMapMapSli
+InMapMapSli(m map[string]map[string][]string, s string) bool  
+
+Returns true if s is a key in outer map.  
+
 ### iotools wraps open and create file functions with error handling  
 
 #### OpenFile
