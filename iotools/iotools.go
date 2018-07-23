@@ -31,7 +31,7 @@ func CreateFile(file string) *os.File {
 func Exists(path string) bool {
 	// Returns true if file/directory exists
 	ret := true
-	err := os.Stat(path)
+	_, err := os.Stat(path)
 	if err != nil {
 		ret = false
 	}
@@ -40,7 +40,7 @@ func Exists(path string) bool {
 
 func FormatPath(path string, makenew bool) (string, bool) {
 	// Returns path name with trailing slash and makes directory if makenew == true
-	if path[-1] != '/' {
+	if path[len(path)-1] != '/' {
 		path = path + "/"
 	}
 	ex := Exists(path)
@@ -65,19 +65,19 @@ func GetExt(file string) string {
 func GetFileName(file string) string {
 	// Returns base name from filename
 	idx := strings.LastIndex(file, "/") + 1
-	ind := strings.Index(".")
+	ind := strings.Index(file, ".")
 	return file[idx:ind]
 }
 
 func GetParent(path string) string {
 	// Returns name of parent directory from filename/directory
-	if strings.Contains(path, ".") == true && path[-1] == '/' {
+	if strings.Contains(path, ".") == true && path[len(path)-1] == '/' {
 		// Drop file name
 		ind := strings.LastIndex(path, "/")
 		path = path[:ind]
-	} else if path[-1] == '/' {
+	} else if path[len(path)-1] == '/' {
 		// Drop trailing slash
-		path = path[:-1]
+		path = path[:len(path)-1]
 	}
 	idx := strings.LastIndex(path, "/") + 1
 	return path[idx:]
