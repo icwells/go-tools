@@ -42,20 +42,45 @@ InMapMapSli(m map[string]map[string][]string, s string) bool
 
 Returns true if s is a key in outer map.  
 
-### iotools wraps open and create file functions with error handling  
+### iotools wraps common file/path functions with error handling  
 
 #### OpenFile
-OpenFile(file string) *os.File  
+iotools.OpenFile(file string) *os.File  
 
 Returns pointer to File type. Prints and error and exits if file cannot be opened.  
 
 #### CreateFile
-CreateFile(file string) *os.File   
+iotools.CreateFile(file string) *os.File   
 
 Creates new file and returns pointer. Prints and error and exits if file cannot be created.
 
+#### Exists  
+iotools.Exists(path string) bool
+
+Returns true if file or directory exists. Otherwise, returns false.  
+
+#### FormatPath  
+iotools.FormatPath(path string, makenew bool) (string, bool)  
+
+Returns path name with trailing slash and result of Exists(path). Makes directory if makenew == true.  
+
+#### GetExt  
+iotools.GetExt(file string) string  
+
+Returns extension from file name.  
+
+#### GetFileName  
+iotools.GetFileName(file string) string  
+
+Returns base name from file name.  
+
+#### GetParent  
+iotools.GetParent(file string) string  
+
+Returns name of parent directory from file or directory.  
+
 #### WriteToCSV
-WriteToCSV(outfile, header string, results [][]string)  
+iotools.WriteToCSV(outfile, header string, results [][]string)  
 
 Writes header and slice of string slices to comma seperated file.  
 Prints error if line cannot be written but does not exit.  
