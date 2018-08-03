@@ -8,23 +8,32 @@ import (
 	"strings"
 )
 
+func CheckError(msg string, err error, code int) bool {
+	// If err is nil, returns true; otherwise, if code is 0 print warning and return false.
+	// if code is not 0, print error and exit with code
+	ret = false
+	if err == nil {
+		ret = true
+	} else if code == 0 {
+		fmt.Fprintf(os.Stderr, "\t[Warning] %s: %v\n", outfile, err)
+	} else {
+		fmt.Fprintf(os.Stderr, "\n\t[ERROR] %s: %v\n\n", outfile, err)
+		os.Exit(code)
+	}
+	return ret
+}
+
 func OpenFile(file string) *os.File {
 	// Returns file stream, exits if it encounters an error
 	f, err := os.Open(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "[ERROR] Reading %s: %v\n", file, err)
-		os.Exit(1)
-	}
+	_ := CheckError(fmt.Sprintf("Reading %s", file), err, 1)
 	return f
 }
 
 func CreateFile(file string) *os.File {
 	// Creates file and returns file stream, exits if it encounters an error
 	f, err := os.Create(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "[ERROR] Creating %s: %v\n", file, err)
-		os.Exit(1)
-	}
+	_ := CheckError(fmt.Sprintf("Creating %s", file), err, 2)
 	return f
 }
 
@@ -88,14 +97,10 @@ func WriteToCSV(outfile, header string, results [][]string) {
 	out := CreateFile(outfile)
 	defer out.Close()
 	_, err := out.WriteString(header + "\n")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "[ERROR] Writing header to %s: %v\n", outfile, err)
-	}
+	_ := CheckError(fmt.Sprintf("Writing header to %s", outfile), err, 0)
 	for _, i := range results {
 		// Write comma seperated items to file
-		_, err := out.WriteString(strings.Join(i, ",") + "\n")
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "[ERROR] Writing line to %s: %v\n", outfile, err)
-		}
+		_, err = out.WriteString(strings.Join(i, ",") + "\n")
+		_ := CheckError(fmt.Sprintf("Writing header to %s", outfile), err, 0)
 	}
 }
