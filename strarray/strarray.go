@@ -38,6 +38,18 @@ func InMapStr(m map[string]string, s string) bool {
 	return in
 }
 
+func InMapStrInt(m map[string]int, s string) bool {
+	// Returns true if s is a key in m
+	in := false
+	for k, _ := range m {
+		if s == k {
+			in = true
+			break
+		}
+	}
+	return in
+}
+
 func InMapSli(m map[string][]string, s string) bool {
 	// Returns true if s is a key in m
 	in := false

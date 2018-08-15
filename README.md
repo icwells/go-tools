@@ -26,6 +26,11 @@ Returns true if s is in column c in l
 
 Returns true if s is in m keys. 
 
+#### InMapStrInt  
+strarray.InMapStrInt(m map[string]int, s string) bool  
+
+Returns true if s is in m keys.  
+
 #### InMapSli  
 	strarray.InMapSli(m map[string][]string, s string) bool  
 
