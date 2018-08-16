@@ -65,6 +65,11 @@ Returns pointer to File type. Prints and error and exits if file cannot be opene
 
 Creates new file and returns pointer. Prints and error and exits if file cannot be created.
 
+#### GetScanner  
+	iotools.GetScanner(f *os.File) *bufio.Scanner  
+
+Returns scanner for either gzipped or uncompressed file.  
+
 #### Exists  
 	iotools.Exists(path string) bool
 

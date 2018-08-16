@@ -3,7 +3,10 @@
 package iotools
 
 import (
+	"bufio"
+	"compress/gzip"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
@@ -35,6 +38,25 @@ func CreateFile(file string) *os.File {
 	f, err := os.Create(file)
 	_ = CheckError(fmt.Sprintf("Creating %s", file), err, 2)
 	return f
+}
+
+func GetScanner(f *os.File) *bufio.Scanner {
+	// Returns scanner for gzipped/uncompressed file
+	var scanner *bufio.Scanner
+	reader := bufio.NewReader(io.Reader(f))
+	// Check if first two bytes == 0x1f8b (i.e. 31 & 139)
+	test, err := reader.Peek(2)
+	_ := CheckError("Cannot peek into file", err, 3)
+	if test[0] == 31 && test[1] == 139 {
+		// Make scanner from gzip reader
+		greader, _ := qzip.NewReader(reader)
+		_ := CheckError("Cannot read gzipped file", err, 4)
+		scanner = bufio.NewScanner(greader)
+	} else {
+		// Make scanner from bufio reader
+		scanner = bufio.NewScanner(reader)
+	}
+	return scanner
 }
 
 func Exists(path string) bool {
