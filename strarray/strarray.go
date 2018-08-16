@@ -28,60 +28,30 @@ func InSliceSli(l [][]string, s string, c int) bool {
 
 func InMapStr(m map[string]string, s string) bool {
 	// Returns true if s is a key in m
-	in := false
-	for k, _ := range m {
-		if s == k {
-			in = true
-			break
-		}
-	}
+	_, in := m[s]
 	return in
 }
 
 func InMapStrInt(m map[string]int, s string) bool {
 	// Returns true if s is a key in m
-	in := false
-	for k, _ := range m {
-		if s == k {
-			in = true
-			break
-		}
-	}
+	_, in := m[s]
 	return in
 }
 
 func InMapSli(m map[string][]string, s string) bool {
 	// Returns true if s is a key in m
-	in := false
-	for k, _ := range m {
-		if s == k {
-			in = true
-			break
-		}
-	}
+	_, in := m[s]
 	return in
 }
 
 func InMapMapStr(m map[string]map[string]string, s string) bool {
 	// Returns true if s is a key in outer map
-	in := false
-	for k, _ := range m {
-		if s == k {
-			in = true
-			break
-		}
-	}
+	_, in := m[s]
 	return in
 }
 
 func InMapMapSli(m map[string]map[string][]string, s string) bool {
 	// Returns true if s is a key in outer map
-	in := false
-	for k, _ := range m {
-		if s == k {
-			in = true
-			break
-		}
-	}
+	_, in := m[s]
 	return in
 }
