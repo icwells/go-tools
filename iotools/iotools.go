@@ -122,6 +122,7 @@ func GetDelim(header string) string {
 		if strings.Contains(header, i) == true {
 			d = i
 			found = true
+			break
 		}
 	}
 	if found == false {
