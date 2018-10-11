@@ -95,6 +95,11 @@ Returns base name from file name.
 
 Returns name of parent directory from file or directory.  
 
+#### GetDelim
+	iotools.GetDelim(header string) string
+
+Returns delimiter from header of a text file
+
 #### WriteToCSV
 	iotools.WriteToCSV(outfile, header string, results [][]string)  
 

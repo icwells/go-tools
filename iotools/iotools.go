@@ -114,6 +114,22 @@ func GetParent(path string) string {
 	return path[idx:]
 }
 
+func GetDelim(header string) string {
+	// Returns delimiter
+	var d string
+	found := false
+	for _, i := range []string{"\t", ",", " "} {
+		if strings.Contains(header, i) == true {
+			d = i
+			found = true
+		}
+	}
+	if found == false {
+		fmt.Println("\n\t[Error] Cannot determine delimeter. Exiting.\n")
+	}
+	return d
+}
+
 func WriteToCSV(outfile, header string, results [][]string) {
 	// Writes slice of slices to file
 	out := CreateFile(outfile)
