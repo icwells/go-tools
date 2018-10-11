@@ -58,12 +58,12 @@ msg and returns false. Otherwise, it prints and error formated with message and 
 #### OpenFile
 	iotools.OpenFile(file string) *os.File  
 
-Returns pointer to File type. Prints and error and exits if file cannot be opened.  
+Returns pointer to File type. Prints an error and exits if file cannot be opened.  
 
 #### CreateFile
 	iotools.CreateFile(file string) *os.File   
 
-Creates new file and returns pointer. Prints and error and exits if file cannot be created.
+Creates new file and returns pointer. Prints an error and exits if file cannot be created.
 
 #### GetScanner  
 	iotools.GetScanner(f *os.File) *bufio.Scanner  
