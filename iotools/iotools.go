@@ -40,6 +40,13 @@ func CreateFile(file string) *os.File {
 	return f
 }
 
+func AppendFile(file string) *os.File {
+	// Returns files stream to append to given file
+	f, err := os.OpenFile(file, os.O_APPEND|os.O_WRONLY, 0600)
+	_ = CheckError(fmt.Sprintf("Append to %s", file), err, 3)
+	return f
+}
+
 func GetScanner(f *os.File) *bufio.Scanner {
 	// Returns scanner for gzipped/uncompressed file
 	var scanner *bufio.Scanner
