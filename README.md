@@ -6,9 +6,6 @@
 	go get github.com/icwells/go-tools/iotools  
 	go get github.com/icwells/go-tools/strarray  
 
-	go install github.com/icwells/go-tools/iotools  
-	go install github.com/icwells/go-tools/strarray  
-
 ## strarray contains functions for working with slices and maps of strings  
 
 #### InSliceStr
