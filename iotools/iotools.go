@@ -96,20 +96,28 @@ func FormatPath(path string, makenew bool) (string, bool) {
 
 func GetExt(file string) string {
 	// Returns extension from filename
-	idx := strings.LastIndex(file, ".") + 1
-	return file[idx:]
+	ret := ""
+	if strings.Contains(file, ".") == true {
+		idx := strings.LastIndex(file, ".") + 1
+		ret = file[idx:]
+	}
+	return ret
 }
 
 func GetFileName(file string) string {
 	// Returns base name from filename
-	idx := strings.LastIndex(file, "/") + 1
-	ind := strings.Index(file, ".")
-	return file[idx:ind]
+	ret := ""
+	if strings.Contains(file, ".") == true && strings.Contains(file, "/") == true {
+		idx := strings.LastIndex(file, "/") + 1
+		ind := strings.Index(file, ".")
+		ret = file[idx:ind]
+	}
+	return ret
 }
 
 func GetParent(path string) string {
 	// Returns name of parent directory from filename/directory
-	if strings.Contains(path, ".") == true && path[len(path)-1] == '/' {
+	if strings.Contains(path, ".") == true && path[len(path)-1] != '/' {
 		// Drop file name
 		ind := strings.LastIndex(path, "/")
 		path = path[:ind]
@@ -133,7 +141,7 @@ func GetDelim(header string) string {
 		}
 	}
 	if found == false {
-		fmt.Println("\n\t[Error] Cannot determine delimeter. Exiting.\n")
+		fmt.Print("\n\t[Error] Cannot determine delimeter. Exiting.\n\n")
 	}
 	return d
 }
