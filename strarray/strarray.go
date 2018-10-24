@@ -18,9 +18,11 @@ func InSliceSli(l [][]string, s string, c int) bool {
 	// Returns true if s is in column c in l
 	in := false
 	for _, i := range l {
-		if s == i[c] {
-			in = true
-			break
+		if c < len(i) {
+			if s == i[c] {
+				in = true
+				break
+			}
 		}
 	}
 	return in
