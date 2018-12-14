@@ -18,31 +18,23 @@ Returns true if s is in l.
 
 Returns true if s is in column c in l  
 
-#### InMapStr  
-	strarray.InMapStr(m map[string]string, s string) bool  
+### Set  
+The set struct is a simple python-style set for strings.  
 
-Returns true if s is in m keys. 
+#### Add  
+	set.add(value string)  
 
-#### InMapStrInt  
-strarray.InMapStrInt(m map[string]int, s string) bool  
+Adds string value to set.  
 
-Returns true if s is in m keys.  
+#### InSet  
+	set.InSet(value string)  
 
-#### InMapSli  
-	strarray.InMapSli(m map[string][]string, s string) bool  
+Reurns true if value is in the set. Returns false if it is not.  
 
-Returns true if s is in m keys. 
+#### ToSlice  
+	set.ToSlice() []string  
 
-
-#### InMapMapStr  
-	strarray.InMapMapStr(m map[string]map[string]string, s string) bool  
-
-Returns true if s is a key in outer map.  
-
-#### InMapMapSli
-	strarray.InMapMapSli(m map[string]map[string][]string, s string) bool  
-
-Returns true if s is a key in outer map.  
+Returns set as a sorted string slice.
 
 ## iotools wraps common file/path functions with error handling  
 

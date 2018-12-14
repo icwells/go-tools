@@ -2,6 +2,8 @@
 
 package strarray
 
+import "sort"
+
 func InSliceStr(l []string, s string) bool {
 	// Returns true if s is in l
 	in := false
@@ -28,32 +30,27 @@ func InSliceSli(l [][]string, s string, c int) bool {
 	return in
 }
 
-func InMapStr(m map[string]string, s string) bool {
-	// Returns true if s is a key in m
-	_, in := m[s]
-	return in
+type Set struct {
+	set	map[string]byte
 }
 
-func InMapStrInt(m map[string]int, s string) bool {
-	// Returns true if s is a key in m
-	_, in := m[s]
-	return in
+func (s *Set) Add(v string) {
+	// Add new value to set
+	s[v] = '0'
 }
 
-func InMapSli(m map[string][]string, s string) bool {
-	// Returns true if s is a key in m
-	_, in := m[s]
-	return in
+func (s *Set) InSet(v string) {
+	// Returns true if v is in s
+	_, ex := s.set[v]
+	return ex
 }
 
-func InMapMapStr(m map[string]map[string]string, s string) bool {
-	// Returns true if s is a key in outer map
-	_, in := m[s]
-	return in
-}
-
-func InMapMapSli(m map[string]map[string][]string, s string) bool {
-	// Returns true if s is a key in outer map
-	_, in := m[s]
-	return in
+func (s *Set) ToSlice() {
+	// Returns sorted slice of set
+	var ret []string
+	for k := range s.set {
+		ret = append(ret, k)
+	}
+	sort.Sort(ret)
+	return ret
 }
