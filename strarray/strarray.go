@@ -2,7 +2,9 @@
 
 package strarray
 
-import "sort"
+import (
+	"sort"
+)
 
 func InSliceStr(l []string, s string) bool {
 	// Returns true if s is in l
@@ -30,8 +32,15 @@ func InSliceSli(l [][]string, s string, c int) bool {
 	return in
 }
 
+//----------------------------------------------------------------------------
+
 type Set struct {
 	set	map[string]byte
+}
+
+func NewSet() {
+	// Initializes new set
+	return make(map[string]byte)
 }
 
 func (s *Set) Len() int {
@@ -58,4 +67,11 @@ func (s *Set) ToSlice() {
 	}
 	sort.Sort(ret)
 	return ret
+}
+
+func (s *Set) Pop(v string) {
+	// Removes v from set
+	if s.InSet(v) == true {
+		delete(s.set, v)
+	}
 }
