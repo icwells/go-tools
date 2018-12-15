@@ -21,8 +21,13 @@ Returns true if s is in column c in l
 ### Set  
 The set struct is a simple python-style set for strings.  
 
+#### Len  
+	set.Len(value string)  
+
+Returns length of set.  
+
 #### Add  
-	set.add(value string)  
+	set.Add(value string)  
 
 Adds string value to set.  
 

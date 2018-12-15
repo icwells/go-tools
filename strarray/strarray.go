@@ -34,6 +34,11 @@ type Set struct {
 	set	map[string]byte
 }
 
+func (s *Set) Len() int {
+	// Returns length of set
+	return len(s.set)
+}
+
 func (s *Set) Add(v string) {
 	// Add new value to set
 	s[v] = '0'
