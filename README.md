@@ -18,6 +18,11 @@ Returns true if s is in l.
 
 Returns true if s is in column c in l  
 
+#### SliceIndex  
+	strarray.SliceIndex(l []string, v string) int  
+
+Returns first index v value in slice. Returns -1 if it is not found.  
+
 ### Set  
 The set struct is a simple python-style set for strings.  
 

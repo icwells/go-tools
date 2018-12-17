@@ -32,6 +32,18 @@ func InSliceSli(l [][]string, s string, c int) bool {
 	return in
 }
 
+func SliceIndex(l []string, v string) int {
+	// Returns first index of v in l
+	ret := -1
+	for idx, i := range l {
+		if i == v {
+			ret = idx
+			break
+		}
+	}
+	return ret
+}
+
 //----------------------------------------------------------------------------
 
 type Set struct {

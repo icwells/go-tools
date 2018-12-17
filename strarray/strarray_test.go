@@ -3,7 +3,6 @@
 package strarray
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -31,8 +30,7 @@ func TestInSliceStr(t *testing.T) {
 	for _, i := range cases {
 		actual := InSliceStr(i.slice, i.target)
 		if actual != i.expected {
-			msg := fmt.Sprintf("%s: %s", i.target, i.slice)
-			t.Error(msg)
+			t.Errorf("%s: %s", i.target, i.slice)
 		}
 	}
 }
@@ -59,10 +57,23 @@ func TestInSliceSlice(t *testing.T) {
 	for _, i := range cases {
 		actual := InSliceSli(slice, i.target, i.column)
 		if actual != i.expected {
-			fmt.Println(actual, i.expected)
-			msg := fmt.Sprintf("%s: %s", i.target, i.slice)
-			t.Error(msg)
+			t.Errorf("%s: %s", i.target, i.slice)
 		}
+	}
+}
+
+func TestSliceIndex(t *testing.T) {
+	// Tests slice index function
+	cases := []string{"a", "b", "c", "d", "e"}
+	for idx, i := range cases {
+		a := SliceIndex(cases, i)
+		if a != idx {
+			t.Errorf("Actual index %d does not equal expected: %d", a, idx)
+		}
+	}
+	a := SliceIndex(cases, "f")
+	if a != -1 {
+		t.Errorf("Actual index %d does not equal -1", a)
 	}
 }
 
