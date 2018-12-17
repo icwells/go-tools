@@ -68,14 +68,14 @@ func TestInSliceSlice(t *testing.T) {
 
 func evaluateLength(t *testing.T, a, e int) {
 	// Compares actual length to expected
-	if l != e {
+	if a != e {
 		t.Errorf("Actual length %d does nto equal expected: %d", a, e)
 	}
 }
 
 func evaluateBool(t *testing.T, a, e bool) {
 	// Compares results of inset
-	if l != e {
+	if a != e {
 		t.Errorf("Actual InSet value %v does nto equal expected: %v", a, e)
 	}
 }
@@ -84,17 +84,17 @@ func TestSet(t *testing.T) {
 	// Tests set attributes
 	cases := []string{"a", "b", "c", "d", "e"}
 	s := NewSet()
-	evaluateLength(t, len(s), 0)
+	evaluateLength(t, s.Length(), 0)
 	for idx, i := range cases {
 		s.Add(i)
-		evaluateLength(t, len(s), idx+1)
+		evaluateLength(t, s.Length(), idx+1)
 		evaluateBool(t, s.InSet(i), true)
 	}
-	l := len(s)
+	l := s.Length()
 	for _, i := range cases {
 		s.Pop(i)
 		l--
-		evaluateLength(t, len(s), i)
+		evaluateLength(t, s.Length(), l)
 		evaluateBool(t, s.InSet(i), false)
 	}
 }

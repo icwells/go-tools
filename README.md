@@ -26,8 +26,8 @@ The set struct is a simple python-style set for strings.
 
 Initializes new set.  
 
-#### Len  
-	set.Len()  
+#### Length  
+	set.Length()  
 
 Returns length of set.  
 

@@ -38,34 +38,36 @@ type Set struct {
 	set	map[string]byte
 }
 
-func NewSet() {
+func NewSet() Set {
 	// Initializes new set
-	return make(map[string]byte)
+	var s Set
+	s.set = make(map[string]byte)
+	return s
 }
 
-func (s *Set) Len() int {
+func (s *Set) Length() int {
 	// Returns length of set
 	return len(s.set)
 }
 
 func (s *Set) Add(v string) {
 	// Add new value to set
-	s[v] = '0'
+	s.set[v] = '0'
 }
 
-func (s *Set) InSet(v string) {
+func (s *Set) InSet(v string) bool {
 	// Returns true if v is in s
 	_, ex := s.set[v]
 	return ex
 }
 
-func (s *Set) ToSlice() {
+func (s *Set) ToSlice() []string {
 	// Returns sorted slice of set
 	var ret []string
 	for k := range s.set {
 		ret = append(ret, k)
 	}
-	sort.Sort(ret)
+	sort.Strings(ret)
 	return ret
 }
 
