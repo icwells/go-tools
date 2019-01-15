@@ -42,7 +42,7 @@ func CreateFile(file string) *os.File {
 
 func AppendFile(file string) *os.File {
 	// Returns files stream to append to given file
-	f, err := os.OpenFile(file, os.O_APPEND|os.O_WRONLY, 0600)
+	f, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	_ = CheckError(fmt.Sprintf("Append to %s", file), err, 3)
 	return f
 }

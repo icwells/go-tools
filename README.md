@@ -74,6 +74,12 @@ Returns pointer to File type. Prints an error and exits if file cannot be opened
 
 Creates new file and returns pointer. Prints an error and exits if file cannot be created.
 
+#### AppendFile
+	iotools.AppendFile(file string) *os.File   
+
+Returns pointer to file to append to. Creates file if it does not exist. 
+Prints an error and exits if file cannot be opened or created.
+
 #### GetScanner  
 	iotools.GetScanner(f *os.File) *bufio.Scanner  
 
