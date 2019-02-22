@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"compress/gzip"
 	"fmt"
+	"go/build"
 	"io"
 	"os"
 	"strings"
@@ -74,6 +75,19 @@ func Exists(path string) bool {
 		ret = false
 	}
 	return ret
+}
+
+func getGOPATH() string {
+	// Returns gopath
+	gopath := os.Getenv("GOPATH")
+	if gopath == "" {
+		gopath = build.Default.GOPATH
+	}
+	if Exists(gopath) == false {
+		fmt.Print("\n\t[Error] Cannot determine GOPATH. Exiting.\n\n")
+		os.Exit(10)
+	}
+	return gopath
 }
 
 func FormatPath(path string, makenew bool) (string, bool) {

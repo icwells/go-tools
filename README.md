@@ -90,6 +90,11 @@ Returns scanner for either gzipped or uncompressed file.
 
 Returns true if file or directory exists. Otherwise, returns false.  
 
+#### getGOPATH  
+	iotools.getGOPATH() string
+
+Returns GOPATH from environment. Prints error and exits if it cannot detemermine GOPATH.  
+
 #### FormatPath  
 	iotools.FormatPath(path string, makenew bool) (string, bool)  
 

@@ -8,12 +8,12 @@ import (
 )
 
 type testcase struct {
-	file		string
-	delim		string
-	filename	string
-	parent		string
-	ext			string
-	exists		bool
+	file     string
+	delim    string
+	filename string
+	parent   string
+	ext      string
+	exists   bool
 }
 
 func newTestCases() []testcase {
@@ -99,4 +99,3 @@ func TestGetDelim(t *testing.T) {
 		}
 	}
 }
-
