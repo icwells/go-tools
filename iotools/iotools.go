@@ -77,7 +77,7 @@ func Exists(path string) bool {
 	return ret
 }
 
-func getGOPATH() string {
+func GetGOPATH() string {
 	// Returns gopath
 	gopath := os.Getenv("GOPATH")
 	if gopath == "" {
