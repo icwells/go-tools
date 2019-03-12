@@ -143,6 +143,15 @@ func GetParent(path string) string {
 	return path[idx:]
 }
 
+func GetHeader(row []string) map[string]int {
+	// Returns map of header indeces
+	ret := make(map[string]int)
+	for idx, i := range row {
+		ret[i] = idx
+	}
+	return ret
+}
+
 func GetDelim(header string) string {
 	// Returns delimiter
 	var d string

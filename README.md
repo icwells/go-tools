@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/icwells/go-tools.svg?branch=master)](https://travis-ci.com/icwells/go-tools)
+
 # go-tools  
 
 ## Commonly used GO functions (intended for personal use, but feel free to use)  
@@ -115,10 +117,15 @@ Returns base name from file name.
 
 Returns name of parent directory from file or directory.  
 
-#### GetDelim
-	iotools.GetDelim(header string) string
+#### GetHeader
+	iotools.GetHeader(header []string) map[string]int  
 
-Returns delimiter from header of a text file
+Returns map of column names matched to index numbers for simple header parsing.  
+
+#### GetDelim
+	iotools.GetDelim(header string) string  
+
+Returns delimiter from header of a text file.  
 
 #### WriteToCSV
 	iotools.WriteToCSV(outfile, header string, results [][]string)  
