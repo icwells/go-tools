@@ -122,9 +122,12 @@ func GetFileName(file string) string {
 	// Returns base name from filename
 	ret := ""
 	if strings.Contains(file, ".") == true && strings.Contains(file, "/") == true {
-		idx := strings.LastIndex(file, "/") + 1
-		ind := strings.Index(file, ".")
-		ret = file[idx:ind]
+		// Index slash first in case there is a period in path
+		tmp := file[strings.LastIndex(file, "/") + 1:]
+		idx := strings.Index(tmp, ".")
+		if idx >= 0 {
+			ret = tmp[:idx]
+		}
 	}
 	return ret
 }

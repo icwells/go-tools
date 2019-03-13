@@ -57,7 +57,7 @@ func TestGetFileName(t *testing.T) {
 	for _, i := range cases {
 		actual := GetFileName(i.file)
 		if actual != i.filename {
-			msg := fmt.Sprintf("Name for %s identified as %s", i.file, i.filename)
+			msg := fmt.Sprintf("Name for %s identified as %s", i.file, actual)
 			t.Error(msg)
 		}
 	}
