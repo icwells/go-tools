@@ -7,10 +7,10 @@ import (
 )
 
 type testcase struct {
-	slice 		[]string
-	target		string
-	column		int
-	expected	bool
+	slice    []string
+	target   string
+	column   int
+	expected bool
 }
 
 func newStringSliceCases() []testcase {
@@ -74,6 +74,53 @@ func TestSliceIndex(t *testing.T) {
 	a := SliceIndex(cases, "f")
 	if a != -1 {
 		t.Errorf("Actual index %d does not equal -1", a)
+	}
+}
+
+func TestSliceCount(t *testing.T) {
+	// Tests SliceCount
+	s := []string{"a", "b", "e", "e", "c", "c", "d", "e"}
+	cases := []struct {
+		v string
+		i int
+	}{
+		{"a", 1},
+		{"b", 1},
+		{"e", 3},
+		{"c", 2},
+		{"d", 1},
+	}
+	for _, i := range cases {
+		n := SliceCount(s, i.v)
+		if n != i.i {
+			t.Errorf("Incorrect count %d returned for %s.", n, i.v)
+		}
+	}
+}
+
+func TestDeleteSliceIndex(t *testing.T) {
+	//Tests DeleteSliceIndex function
+	cases := []string{"a", "b", "c", "d", "e"}
+	for idx, i := range cases {
+		cp := make([]string, len(cases))
+		copy(cp, cases)
+		cp = DeleteSliceIndex(cp, idx)
+		if idx < len(cp) && cp[idx] == i {
+			t.Errorf("Value %s at index %d was not removed from slice.", i, idx)
+		}
+	}
+}
+
+func TestDeleteSliceValue(t *testing.T) {
+	//Tests DeleteSliceValue function
+	cases := []string{"a", "b", "e", "e", "c", "c", "d", "e"}
+	for _, i := range cases {
+		cp := make([]string, len(cases))
+		copy(cp, cases)
+		cp = DeleteSliceValue(cp, i)
+		if SliceCount(cp, i) != 0 {
+			t.Errorf("All instances of %s were not removed from slice.", i)
+		}
 	}
 }
 

@@ -25,6 +25,21 @@ Returns true if s is in column c in l
 
 Returns first index v value in slice. Returns -1 if it is not found.  
 
+#### SliceCount  
+	strarray.SliceCount(s []string, v string) int  
+
+Returns number of occurances of v in s.  
+
+#### DeleteSliceIndex  
+	strarray.DeleteSliceIndex(s []string, idx int) []string  
+
+Deletes item at idx while preventing index errors.  
+
+##### DeleteSliceValue  
+	strarray.DeleteSliceValue(s []string, v string) []string  
+
+Deletes all occurances of v from s.  
+
 ### Set  
 The set struct is a simple python-style set for strings.  
 
