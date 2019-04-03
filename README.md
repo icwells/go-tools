@@ -10,6 +10,9 @@
 
 ## strarray contains functions for working with slices and maps of strings  
 
+#### TitleCase(t string) string  
+Manually converts term to title case (strings.Title is buggy).  
+
 #### InSliceStr
 	strarray.InSliceStr(l []string, s string) bool  
 
