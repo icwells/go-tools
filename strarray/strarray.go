@@ -107,6 +107,15 @@ func NewSet() Set {
 	return s
 }
 
+func ToSet(s []string) Set {
+	// Converts string slice to set
+	ret := NewSet()
+	for _, i := range s {
+		ret.Add(i)
+	}
+	return ret
+}
+
 func (s *Set) Length() int {
 	// Returns length of set
 	return len(s.set)

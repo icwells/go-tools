@@ -47,9 +47,15 @@ Deletes all occurances of v from s.
 The set struct is a simple python-style set for strings.  
 
 #### NewSet  
-	NewSet()
+	strarray.NewSet() Set
 
 Initializes new set.  
+
+
+#### ToSet
+	strarray.ToSet(s []string) Set  
+
+Converts slice of strings to set.  
 
 #### Length  
 	set.Length()  
