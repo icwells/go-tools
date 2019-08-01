@@ -107,10 +107,10 @@ func NewSet() Set {
 	return s
 }
 
-func ToSet(s []string) Set {
+func ToSet(v []string) Set {
 	// Converts string slice to set
 	ret := NewSet()
-	for _, i := range s {
+	for _, i := range v {
 		ret.Add(i)
 	}
 	return ret
@@ -124,6 +124,13 @@ func (s *Set) Length() int {
 func (s *Set) Add(v string) {
 	// Add new value to set
 	s.set[v] = '0'
+}
+
+func (s *Set) Extend(v []string) {
+	// Adds all elements of slice to set
+	for _, i := range v {
+		s.Add(i)
+	}
 }
 
 func (s *Set) InSet(v string) bool {

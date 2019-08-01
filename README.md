@@ -67,6 +67,11 @@ Returns length of set.
 
 Adds string value to set.  
 
+#### Extend  
+	set.Extend(v []string)  
+
+Adds all elements of slice to set.  
+
 #### Pop  
 	set.Pop(v string)  
 
