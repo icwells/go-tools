@@ -188,10 +188,12 @@ func ReadFile(infile string, header bool) ([][]string, map[string]int) {
 		line := strings.TrimSpace(string(input.Text()))
 		if d == "" {
 			d = GetDelim(line)
-		} else if header == false {
-			ret = append(ret, strings.Split(line, d))
+		}
+		s := strings.Split(line, d)
+		if !header {
+			ret = append(ret, s)
 		} else {
-			h = GetHeader(strings.Split(line, d))
+			h = GetHeader(s)
 			header = false
 		}
 	}
