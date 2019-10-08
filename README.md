@@ -156,6 +156,13 @@ Returns map of column names matched to index numbers for simple header parsing.
 
 Returns delimiter from header of a text file.  
 
+
+#### ReadFile  
+	iotools.ReadFile(infile string, header bool) ([][]string, map[string]int)  
+
+Reads tab/comma/space delimiter text files, trims newlines, and returns header as map of 
+column name: index and data as slice of rows split by delimiter.  
+
 #### WriteToCSV
 	iotools.WriteToCSV(outfile, header string, results [][]string)  
 

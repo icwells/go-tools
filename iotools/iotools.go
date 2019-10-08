@@ -123,7 +123,7 @@ func GetFileName(file string) string {
 	ret := ""
 	if strings.Contains(file, ".") == true && strings.Contains(file, "/") == true {
 		// Index slash first in case there is a period in path
-		tmp := file[strings.LastIndex(file, "/") + 1:]
+		tmp := file[strings.LastIndex(file, "/")+1:]
 		idx := strings.Index(tmp, ".")
 		if idx >= 0 {
 			ret = tmp[:idx]
@@ -170,6 +170,28 @@ func GetDelim(header string) string {
 		fmt.Print("\n\t[Error] Cannot determine delimeter. Exiting.\n\n")
 	}
 	return d
+}
+
+func ReadFile(infile string, header bool) ([][]string, map[string]int) {
+	// Reads in text file as slice of string slices and header as map of indeces
+	var d string
+	var h map[string]int
+	var ret [][]string
+	f := OpenFile(infile)
+	defer f.Close()
+	input := GetScanner(f)
+	for input.Scan() {
+		line := strings.TrimSpace(string(input.Text()))
+		if d == "" {
+			d = GetDelim(line)
+		} else if header == false {
+			ret = append(ret, strings.Split(line, d))
+		} else {
+			h = GetHeader(strings.Split(line, d))
+			header = false
+		}
+	}
+	return ret, h
 }
 
 func WriteToCSV(outfile, header string, results [][]string) {
