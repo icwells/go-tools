@@ -177,6 +177,10 @@ func ReadFile(infile string, header bool) ([][]string, map[string]int) {
 	var d string
 	var h map[string]int
 	var ret [][]string
+	if !Exists(infile) {
+		fmt.Printf("\n\t[Error] Input file %s not found. Exiting.\n\n", infile)
+		os.Exit(1)
+	}
 	f := OpenFile(infile)
 	defer f.Close()
 	input := GetScanner(f)
