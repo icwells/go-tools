@@ -3,6 +3,7 @@
 package dataframe
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -30,12 +31,15 @@ func evaluateDF(t *testing.T, df *Dataframe, rows [][]string, index int) {
 	if c != h {
 		t.Errorf("Dimensions returned %d columns instead of %d", c, h)
 	}
-	head := df.GetHeader()
-	idx, ehead := df.subsetRow(row[0])
-	if head != ehead {
-		t.Errorf("Actual header %v does not equal expected: %v", head, ehead)
+	head := strings.Join(df.GetHeader(), " ")
+	idx, ehead := df.subsetRow(rows[0])
+	eh := strings.Join(ehead, " ")
+	if head != eh {
+		t.Errorf("Actual header %s does not equal expected: %s", head, eh)
 	}
-	
+	if idx != df.iname {
+		t.Errorf("Actual index name %s does not equal expected: %s", df.iname, idx)
+	}	
 }
 
 func TestDataFrame(t *testing.T) {
