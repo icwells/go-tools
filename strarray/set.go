@@ -4,7 +4,6 @@ package strarray
 
 import (
 	"sort"
-	"strings"
 )
 
 type Set struct {
