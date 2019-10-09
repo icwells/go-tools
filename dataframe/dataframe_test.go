@@ -18,8 +18,29 @@ func getTestSlice() [][]string {
 	}
 }
 
+func evaluateGetRow(t *testing.T, df *Dataframe, rows [][]string) {
+	// Tests getRows
+	for idx, i := range rows[1:] {
+		_, e := df.subsetRow(i)
+		exp := strings.Join(e, " ")
+		a, err := df.GetRow(idx)
+		if err != nil {
+			t.Errorf("Error selecting row %d: %v", idx, err)
+		} else {
+			act := strings.Join(a, " ")
+			if act != exp {
+				t.Errorf("Actual row %s does not equal expected: %s", act, exp)	
+			}
+		}
+	}
+}
+
+//func evaluateGetColumn(t *testing.T, df *Dataframe, exp string, index int) {
+
+//}
+
 func evaluateGetCell(t *testing.T, df *Dataframe, exp string, index int) {
-	// Tests get cell
+	// Tests get cellfor each data type
 	var act string
 	var err error
 	var r interface{}
@@ -48,7 +69,7 @@ func evaluateGetCell(t *testing.T, df *Dataframe, exp string, index int) {
 		t.Errorf("Error selecting cell at %v, %s: %v", r, c, err)
 	}
 	if af != 12.1 {
-		t.Errorf("Actual cell value %d does not equal expected: 12.1", af)	
+		t.Errorf("Actual cell value %f does not equal expected: 12.1", af)	
 	}
 }
 
