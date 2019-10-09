@@ -30,6 +30,12 @@ func evaluateDF(t *testing.T, df *Dataframe, rows [][]string, index int) {
 	if c != h {
 		t.Errorf("Dimensions returned %d columns instead of %d", c, h)
 	}
+	head := df.GetHeader()
+	idx, ehead := df.subsetRow(row[0])
+	if head != ehead {
+		t.Errorf("Actual header %v does not equal expected: %v", head, ehead)
+	}
+	
 }
 
 func TestDataFrame(t *testing.T) {
