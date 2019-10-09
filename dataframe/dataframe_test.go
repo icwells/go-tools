@@ -35,9 +35,23 @@ func evaluateGetRow(t *testing.T, df *Dataframe, rows [][]string) {
 	}
 }
 
-//func evaluateGetColumn(t *testing.T, df *Dataframe, exp string, index int) {
-
-//}
+func evaluateGetColumn(t *testing.T, df *Dataframe, rows [][]string) {
+	// Tests getColumn functions
+	var e []string
+	for _, i := range rows[1:] {
+		e = append(e, i[1])
+	}
+	exp := strings.Join(e, " ")
+	a, err := df.GetColumn("Age")
+	if err != nil {
+			t.Errorf("Error selecting column Age: %v", err)
+	} else {
+		act := strings.Join(a, " ")
+		if act != exp {
+			t.Errorf("Actual column %s does not equal expected: %s", act, exp)	
+		}
+	}
+}
 
 func evaluateGetCell(t *testing.T, df *Dataframe, exp string, index int) {
 	// Tests get cellfor each data type
@@ -114,6 +128,8 @@ func evaluateDF(t *testing.T, df *Dataframe, rows [][]string, index int) {
 	}
 	evaluateHeader(t, df, rows)
 	evaluateGetCell(t, df, "12.1", index)
+	evaluateGetRow(t, df, rows)
+	evaluateGetColumn(t, df, rows)
 }
 
 func TestDataFrame(t *testing.T) {
