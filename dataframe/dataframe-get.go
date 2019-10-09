@@ -94,6 +94,8 @@ func (d *Dataframe) GetCellInt(idx interface{}, col interface{}) (int, error) {
 	var ret int
 	val, err := d.GetCell(idx, col)
 	if err == nil {
+		// Remove any decimal values
+		val = strings.Split(val, ".")[0]
 		ret, err = strconv.Atoi(val)
 	}
 	return ret, err

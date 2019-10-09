@@ -18,19 +18,41 @@ func getTestSlice() [][]string {
 	}
 }
 
-func evaluateDF(t *testing.T, df *Dataframe, rows [][]string, index int) {
-	// Compares dataframe to rows
-	h := len(rows[0])
+func evaluateGetCell(t *testing.T, df *Dataframe, exp string, index int) {
+	// Tests get cell
+	var act string
+	var err error
+	var r interface{}
+	c := "Age"
 	if index >= 0 {
-		h--
+		r = "3"
+	} else {
+		r = 2
 	}
-	c, r := df.Dimensions()
-	if r != len(rows) - 1 {
-		t.Errorf("Dimensions returned %d rows instead of %d", r, len(rows) - 1)
+	act, err = df.GetCell(r, c)
+	if err != nil {
+		t.Errorf("Error selecting cell at %v, %s: %v", r, c, err)
 	}
-	if c != h {
-		t.Errorf("Dimensions returned %d columns instead of %d", c, h)
+	if act != exp {
+		t.Errorf("Actual cell value %s does not equal expected: %s", act, exp)	
 	}
+	ai, err := df.GetCellInt(r, c)
+	if err != nil {
+		t.Errorf("Error selecting cell at %v, %s: %v", r, c, err)
+	}
+	if ai != 12 {
+		t.Errorf("Actual cell value %d does not equal expected: 12", ai)	
+	}
+	af, err := df.GetCellFloat(r, c)
+	if err != nil {
+		t.Errorf("Error selecting cell at %v, %s: %v", r, c, err)
+	}
+	if af != 12.1 {
+		t.Errorf("Actual cell value %d does not equal expected: 12.1", af)	
+	}
+}
+
+func evaluateHeader(t *testing.T, df *Dataframe, rows [][]string) {
 	head := strings.Join(df.GetHeader(), " ")
 	idx, ehead := df.subsetRow(rows[0])
 	eh := strings.Join(ehead, " ")
@@ -40,6 +62,37 @@ func evaluateDF(t *testing.T, df *Dataframe, rows [][]string, index int) {
 	if idx != df.iname {
 		t.Errorf("Actual index name %s does not equal expected: %s", df.iname, idx)
 	}	
+}
+
+func evaluateIndex(t *testing.T, df *Dataframe, rows [][]string) {
+	// Compares indeces
+	var e []string
+	index := strings.Join(df.GetIndex(), " ")
+	for _, i := range rows[1:] {
+		e = append(e, i[2])
+	}
+	exp := strings.Join(e, " ")
+	if index != exp {
+		t.Errorf("Actual index %s does not equal expected: %s", index, exp)
+	}
+}
+
+func evaluateDF(t *testing.T, df *Dataframe, rows [][]string, index int) {
+	// Compares dataframe to rows
+	h := len(rows[0])
+	if index >= 0 {
+		h--
+		evaluateIndex(t, df, rows)
+	}
+	c, r := df.Dimensions()
+	if r != len(rows) - 1 {
+		t.Errorf("Dimensions returned %d rows instead of %d", r, len(rows) - 1)
+	}
+	if c != h {
+		t.Errorf("Dimensions returned %d columns instead of %d", c, h)
+	}
+	evaluateHeader(t, df, rows)
+	evaluateGetCell(t, df, "12.1", index)
 }
 
 func TestDataFrame(t *testing.T) {
