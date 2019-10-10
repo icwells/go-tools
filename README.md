@@ -4,90 +4,24 @@
 
 ## Commonly used GO functions (intended for personal use, but feel free to use)  
 
-### To download and install to gopath:  
+Copyright 2019 by Shawn Rupp
+
+1. [Description](#Description)
+2. [Installation](#Installation)  
+3. [iotools](#iotools)  
+4. [strarray](#strarray)  
+5. [Set](#Set)  
+6. [dataframe](#dataframe)
+
+## Description  
+
+## Installation  
+	go get github.com/icwells/go-tools/dataframe  
 	go get github.com/icwells/go-tools/iotools  
 	go get github.com/icwells/go-tools/strarray  
 
-## strarray contains functions for working with slices and maps of strings  
-
-#### TitleCase(t string) string  
-Manually converts term to title case (strings.Title is buggy).  
-
-#### InSliceStr
-	strarray.InSliceStr(l []string, s string) bool  
-
-Returns true if s is in l.  
-
-#### InSliceSli
-	strarray.InSliceSli(l [][]string, s string, c int) bool  
-
-Returns true if s is in column c in l  
-
-#### SliceIndex  
-	strarray.SliceIndex(l []string, v string) int  
-
-Returns first index v value in slice. Returns -1 if it is not found.  
-
-#### SliceCount  
-	strarray.SliceCount(s []string, v string) int  
-
-Returns number of occurances of v in s.  
-
-#### DeleteSliceIndex  
-	strarray.DeleteSliceIndex(s []string, idx int) []string  
-
-Deletes item at idx while preventing index errors.  
-
-##### DeleteSliceValue  
-	strarray.DeleteSliceValue(s []string, v string) []string  
-
-Deletes all occurances of v from s.  
-
-### Set  
-The set struct is a simple python-style set for strings.  
-
-#### NewSet  
-	strarray.NewSet() Set
-
-Initializes new set.  
-
-
-#### ToSet
-	strarray.ToSet(s []string) Set  
-
-Converts slice of strings to set.  
-
-#### Length  
-	set.Length()  
-
-Returns length of set.  
-
-#### Add  
-	set.Add(value string)  
-
-Adds string value to set.  
-
-#### Extend  
-	set.Extend(v []string)  
-
-Adds all elements of slice to set.  
-
-#### Pop  
-	set.Pop(v string)  
-
-Removes v from set.  
-
-#### InSet  
-	set.InSet(value string)  
-
-Reurns true if value is in the set. Returns false if it is not.  
-
-#### ToSlice  
-	set.ToSlice() []string  
-
-Returns set as a sorted string slice.
-
-## iotools wraps common file/path functions with error handling  
+## iotools  
+Wraps common file/path functions with error handling and provides basic input/output functions.  
 
 #### CheckError  
 	iotools.CheckError(msg string, err error, code int) bool  
@@ -156,7 +90,6 @@ Returns map of column names matched to index numbers for simple header parsing.
 
 Returns delimiter from header of a text file.  
 
-
 #### ReadFile  
 	iotools.ReadFile(infile string, header bool) ([][]string, map[string]int)  
 
@@ -168,3 +101,109 @@ column name: index and data as slice of rows split by delimiter.
 
 Writes header and slice of string slices to comma seperated file.  
 Prints error if line cannot be written but does not exit.  
+
+## strarray  
+Contains functions for working with slices and maps of strings, as well as a Python-style set.   
+
+#### TitleCase(t string) string  
+Manually converts term to title case (strings.Title is buggy).  
+
+#### InSliceStr
+	strarray.InSliceStr(l []string, s string) bool  
+
+Returns true if s is in l.  
+
+#### InSliceSli
+	strarray.InSliceSli(l [][]string, s string, c int) bool  
+
+Returns true if s is in column c in l  
+
+#### SliceIndex  
+	strarray.SliceIndex(l []string, v string) int  
+
+Returns first index v value in slice. Returns -1 if it is not found.  
+
+#### SliceCount  
+	strarray.SliceCount(s []string, v string) int  
+
+Returns number of occurances of v in s.  
+
+#### DeleteSliceIndex  
+	strarray.DeleteSliceIndex(s []string, idx int) []string  
+
+Deletes item at idx while preventing index errors.  
+
+##### DeleteSliceValue  
+	strarray.DeleteSliceValue(s []string, v string) []string  
+
+Deletes all occurances of v from s.  
+
+### Set  
+The set struct is a simple python-style set for strings.  
+
+#### NewSet  
+	strarray.NewSet() Set
+
+Initializes new set.  
+
+#### ToSet
+	strarray.ToSet(s []string) Set  
+
+Converts slice of strings to set.  
+
+#### Length  
+	set.Length()  
+
+Returns length of set.  
+
+#### Add  
+	set.Add(value string)  
+
+Adds string value to set.  
+
+#### Extend  
+	set.Extend(v []string)  
+
+Adds all elements of slice to set.  
+
+#### Pop  
+	set.Pop(v string)  
+
+Removes v from set.  
+
+#### InSet  
+	set.InSet(value string)  
+
+Reurns true if value is in the set. Returns false if it is not.  
+
+#### ToSlice  
+	set.ToSlice() []string  
+
+Returns set as a sorted string slice.
+
+## dataframe  
+Provides a variable length, two-dimensional array of strings which can be indexed by row/column names 
+or numbers. It is meant to quickly and cleanly parse input data, particuly when the data of interest contains text. 
+This is still in developement, and there are more features to come.  
+
+### The Dataframe Struct  
+The Dataframe struct stores tabular data in a two-dimensional slice of strings. It stores a header as a map with string keys 
+and column indeces as values. It will optionally also store an index containing string identifiers with row indeces as values.  
+
+	Rows   [][]string
+	Header map[string]int
+	Index  map[string]int
+
+There are two ways to make a new dataframe. One is to initialize an empty struct, while the other is to read input data 
+directly from a file. The columnn value indicates which column should be used for the row index. A negative value 
+will omit the index (note that sting indeces cannot be used if there is not index).  
+
+#### dataframe.NewDataFrame(column int) *Dataframe  
+Initializes an empty dataframe. The given column number of any input data will be used as the index column (a negative value will omit the index).  
+
+#### DataFrameFromFile(infile string, column int) *Dataframe  
+Creates a dataframe the same as above, but loads in data from the given input file. the first row is assumed to be the header.  
+
+### Setter Functions  
+
+
