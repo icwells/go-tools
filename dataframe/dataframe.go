@@ -25,6 +25,7 @@ func (d *Dataframe) subsetRow(row []string) (string, []string) {
 	var ret []string
 	if d.col >= 0 {
 		for idx, i := range row {
+			i = strings.TrimSpace(i)
 			if idx == d.col {
 				index = i
 			} else {

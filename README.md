@@ -206,4 +206,21 @@ Creates a dataframe the same as above, but loads in data from the given input fi
 
 ### Setter Functions  
 
+#### Dataframe.AddRow(row []string) error  
+Adds row to dataframe. If using an index, the index column will be subset from the slice and added to the index. Returns an error if the index value is already present.  
 
+#### Dataframe.SetHeader(row []string)  
+Converts given row to header. Subsets index column if using an index.  
+
+### Getter Functions  
+
+### Other 
+
+#### Dataframe) ToCSV(outfile string)  
+Writes rows to csv with index and header. Includes header value for index column.  
+
+#### Dataframe.DeleteRow(idx interface{}) error  
+Deletes given row from dataframe and adjusts index (if using). Returns error if given index is not found.  
+
+#### Dataframe.DeleteColumn(col interface{}) error  
+Deletes given column from dataframe and adjusts index (if using). Returns error if given index is not found.  
