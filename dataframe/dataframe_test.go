@@ -29,7 +29,7 @@ func evaluateGetRow(t *testing.T, df *Dataframe, rows [][]string) {
 		} else {
 			act := strings.Join(a, " ")
 			if act != exp {
-				t.Errorf("Actual row %s does not equal expected: %s", act, exp)	
+				t.Errorf("Actual row %s does not equal expected: %s", act, exp)
 			}
 		}
 	}
@@ -44,11 +44,11 @@ func evaluateGetColumn(t *testing.T, df *Dataframe, rows [][]string) {
 	exp := strings.Join(e, " ")
 	a, err := df.GetColumn("Age")
 	if err != nil {
-			t.Errorf("Error selecting column Age: %v", err)
+		t.Errorf("Error selecting column Age: %v", err)
 	} else {
 		act := strings.Join(a, " ")
 		if act != exp {
-			t.Errorf("Actual column %s does not equal expected: %s", act, exp)	
+			t.Errorf("Actual column %s does not equal expected: %s", act, exp)
 		}
 	}
 }
@@ -69,21 +69,21 @@ func evaluateGetCell(t *testing.T, df *Dataframe, exp string, index int) {
 		t.Errorf("Error selecting cell at %v, %s: %v", r, c, err)
 	}
 	if act != exp {
-		t.Errorf("Actual cell value %s does not equal expected: %s", act, exp)	
+		t.Errorf("Actual cell value %s does not equal expected: %s", act, exp)
 	}
 	ai, err := df.GetCellInt(r, c)
 	if err != nil {
 		t.Errorf("Error selecting cell at %v, %s: %v", r, c, err)
 	}
 	if ai != 12 {
-		t.Errorf("Actual cell value %d does not equal expected: 12", ai)	
+		t.Errorf("Actual cell value %d does not equal expected: 12", ai)
 	}
 	af, err := df.GetCellFloat(r, c)
 	if err != nil {
 		t.Errorf("Error selecting cell at %v, %s: %v", r, c, err)
 	}
 	if af != 12.1 {
-		t.Errorf("Actual cell value %f does not equal expected: 12.1", af)	
+		t.Errorf("Actual cell value %f does not equal expected: 12.1", af)
 	}
 }
 
@@ -96,7 +96,7 @@ func evaluateHeader(t *testing.T, df *Dataframe, rows [][]string) {
 	}
 	if idx != df.iname {
 		t.Errorf("Actual index name %s does not equal expected: %s", df.iname, idx)
-	}	
+	}
 }
 
 func evaluateIndex(t *testing.T, df *Dataframe, rows [][]string) {
@@ -120,8 +120,8 @@ func evaluateDF(t *testing.T, df *Dataframe, rows [][]string, index int) {
 		evaluateIndex(t, df, rows)
 	}
 	c, r := df.Dimensions()
-	if r != len(rows) - 1 {
-		t.Errorf("Dimensions returned %d rows instead of %d", r, len(rows) - 1)
+	if r != len(rows)-1 {
+		t.Errorf("Dimensions returned %d rows instead of %d", r, len(rows)-1)
 	}
 	if c != h {
 		t.Errorf("Dimensions returned %d columns instead of %d", c, h)
