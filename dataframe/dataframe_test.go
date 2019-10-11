@@ -132,17 +132,78 @@ func evaluateDF(t *testing.T, df *Dataframe, rows [][]string, index int) {
 	evaluateGetColumn(t, df, rows)
 }
 
+func setRows(t *testing.T, rows [][]string, column int) *Dataframe {
+	// Appends rows to dataframe
+	df := NewDataFrame(column)
+	df.SetHeader(rows[0])
+	for _, i := range rows[1:] {
+		err := df.AddRow(i)
+		if err != nil {
+			t.Errorf("Error setting dataframe row: %v", err)
+		}
+	}
+	return df
+}
+
 func TestDataFrame(t *testing.T) {
 	rows := getTestSlice()
 	for _, i := range []int{-1, 2} {
-		df := NewDataFrame(i)
-		df.SetHeader(rows[0])
-		for _, i := range rows[1:] {
-			err := df.AddRow(i)
+		df := setRows(t, rows, i)
+		evaluateDF(t, df, rows, i)
+	}
+}
+
+func TestDeleteRow(t *testing.T) {
+	// Tests DeleteRow
+	row := "3"
+	rows := getTestSlice()
+	df := setRows(t, rows, 2)
+	err := df.DeleteRow(row)
+	if err != nil {
+		t.Errorf("Error selecting row %s for deletion: %v", row, err)
+	} else {
+		for idx := range df.Rows {
+			a, err := df.GetRow(idx)
 			if err != nil {
-				t.Errorf("Error setting dataframe row: %v", err)
+				t.Errorf("Error selecting row %d: %v", idx, err)
+			} else {
+				if idx >= 2 {
+					// Account for deleted row
+					idx++
+				}
+				_, e := df.subsetRow(rows[idx+1])
+				exp := strings.Join(e, " ")
+				act := strings.Join(a, " ")
+				if act != exp {
+					t.Errorf("Actual row %s does not equal expected: %s", act, exp)
+				}
 			}
 		}
-		evaluateDF(t, df, rows, i)
+	}
+}
+
+func TestDeleteColumn(t *testing.T) {
+	// Tests DeleteColumn
+	col := "Species"
+	rows := getTestSlice()
+	df := setRows(t, rows, 2)
+	err := df.DeleteColumn(col)
+	if err != nil {
+		t.Errorf("Error selecting column %s for deletion: %v", col, err)
+	} else {
+		for idx := range df.Rows {
+			a, err := df.GetRow(idx)
+			if err != nil {
+				t.Errorf("Error selecting row %d: %v", idx, err)
+			} else {
+				_, e := df.subsetRow(rows[idx+1])
+				e = append(e[:2], e[3])
+				exp := strings.Join(e, " ")
+				act := strings.Join(a, " ")
+				if act != exp {
+					t.Errorf("Actual row %s does not equal expected: %s", act, exp)
+				}
+			}
+		}
 	}
 }

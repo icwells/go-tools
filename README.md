@@ -23,82 +23,52 @@ Copyright 2019 by Shawn Rupp
 ## iotools  
 Wraps common file/path functions with error handling and provides basic input/output functions.  
 
-#### CheckError  
-	iotools.CheckError(msg string, err error, code int) bool  
-
+#### iotools.CheckError(msg string, err error, code int) bool  
 Returns true if err is nil. If err is not nil and code is 0, it prints a warning formatted with 
 msg and returns false. Otherwise, it prints and error formated with message and exits with code.  
 
-#### OpenFile
-	iotools.OpenFile(file string) *os.File  
-
+#### iotools.OpenFile(file string) *os.File  
 Returns pointer to File type. Prints an error and exits if file cannot be opened.  
 
-#### CreateFile
-	iotools.CreateFile(file string) *os.File   
-
+#### iotools.CreateFile(file string) *os.File   
 Creates new file and returns pointer. Prints an error and exits if file cannot be created.
 
-#### AppendFile
-	iotools.AppendFile(file string) *os.File   
-
+#### iotools.AppendFile(file string) *os.File   
 Returns pointer to file to append to. Creates file if it does not exist. 
 Prints an error and exits if file cannot be opened or created.
 
-#### GetScanner  
-	iotools.GetScanner(f *os.File) *bufio.Scanner  
-
+#### iotools.GetScanner(f *os.File) *bufio.Scanner  
 Returns scanner for either gzipped or uncompressed file.  
 
-#### Exists  
-	iotools.Exists(path string) bool
-
+#### iotools.Exists(path string) bool
 Returns true if file or directory exists. Otherwise, returns false.  
 
-#### GetGOPATH  
-	iotools.getGOPATH() string
-
+#### iotools.getGOPATH() string
 Returns GOPATH from environment. Prints error and exits if it cannot detemermine GOPATH.  
 
-#### FormatPath  
-	iotools.FormatPath(path string, makenew bool) (string, bool)  
-
+#### iotools.FormatPath(path string, makenew bool) (string, bool)  
 Returns path name with trailing slash and result of Exists(path). Makes directory if makenew == true.  
 
-#### GetExt  
-	iotools.GetExt(file string) string  
-
+#### iotools.GetExt(file string) string  
 Returns extension from file name.  
 
-#### GetFileName  
-	iotools.GetFileName(file string) string  
-
+#### iotools.GetFileName(file string) string  
 Returns base name from file name.  
 
-#### GetParent  
-	iotools.GetParent(file string) string  
-
+#### iotools.GetParent(file string) string  
 Returns name of parent directory from file or directory.  
 
-#### GetHeader
-	iotools.GetHeader(header []string) map[string]int  
-
+#### iotools.GetHeader(header []string) map[string]int  
 Returns map of column names matched to index numbers for simple header parsing.  
 
-#### GetDelim
-	iotools.GetDelim(header string) string  
-
+#### iotools.GetDelim(header string) string  
 Returns delimiter from header of a text file.  
 
-#### ReadFile  
-	iotools.ReadFile(infile string, header bool) ([][]string, map[string]int)  
-
+#### iotools.ReadFile(infile string, header bool) ([][]string, map[string]int)  
 Reads tab/comma/space delimiter text files, trims newlines, and returns header as map of 
 column name: index and data as slice of rows split by delimiter.  
 
-#### WriteToCSV
-	iotools.WriteToCSV(outfile, header string, results [][]string)  
-
+#### iotools.WriteToCSV(outfile, header string, results [][]string)  
 Writes header and slice of string slices to comma seperated file.  
 Prints error if line cannot be written but does not exit.  
 
@@ -108,77 +78,49 @@ Contains functions for working with slices and maps of strings, as well as a Pyt
 #### TitleCase(t string) string  
 Manually converts term to title case (strings.Title is buggy).  
 
-#### InSliceStr
-	strarray.InSliceStr(l []string, s string) bool  
-
+#### strarray.InSliceStr(l []string, s string) bool  
 Returns true if s is in l.  
 
-#### InSliceSli
-	strarray.InSliceSli(l [][]string, s string, c int) bool  
-
+#### strarray.InSliceSli(l [][]string, s string, c int) bool  
 Returns true if s is in column c in l  
 
-#### SliceIndex  
-	strarray.SliceIndex(l []string, v string) int  
-
+#### strarray.SliceIndex(l []string, v string) int  
 Returns first index v value in slice. Returns -1 if it is not found.  
 
-#### SliceCount  
-	strarray.SliceCount(s []string, v string) int  
-
+#### strarray.SliceCount(s []string, v string) int  
 Returns number of occurances of v in s.  
 
-#### DeleteSliceIndex  
-	strarray.DeleteSliceIndex(s []string, idx int) []string  
-
+#### strarray.DeleteSliceIndex(s []string, idx int) []string  
 Deletes item at idx while preventing index errors.  
 
-##### DeleteSliceValue  
-	strarray.DeleteSliceValue(s []string, v string) []string  
-
+##### strarray.DeleteSliceValue(s []string, v string) []string  
 Deletes all occurances of v from s.  
 
 ### Set  
 The set struct is a simple python-style set for strings.  
 
-#### NewSet  
-	strarray.NewSet() Set
-
+#### strarray.NewSet() Set
 Initializes new set.  
 
-#### ToSet
-	strarray.ToSet(s []string) Set  
-
+#### strarray.ToSet(s []string) Set  
 Converts slice of strings to set.  
 
-#### Length  
-	set.Length()  
-
+#### set.Length()  
 Returns length of set.  
 
-#### Add  
-	set.Add(value string)  
-
+#### set.Add(value string)  
 Adds string value to set.  
 
-#### Extend  
-	set.Extend(v []string)  
-
+#### set.Extend(v []string)  
 Adds all elements of slice to set.  
 
-#### Pop  
-	set.Pop(v string)  
-
+#### set.Pop(v string)  
 Removes v from set.  
 
-#### InSet  
-	set.InSet(value string)  
-
+#### set.InSet(value string)  
 Reurns true if value is in the set. Returns false if it is not.  
 
-#### ToSlice  
-	set.ToSlice() []string  
-
+#### set.ToSlice() []string  
 Returns set as a sorted string slice.
 
 ## dataframe  
@@ -188,7 +130,9 @@ This is still in developement, and there are more features to come.
 
 ### The Dataframe Struct  
 The Dataframe struct stores tabular data in a two-dimensional slice of strings. It stores a header as a map with string keys 
-and column indeces as values. It will optionally also store an index containing string identifiers with row indeces as values.  
+and column indeces as values. It will optionally also store an index containing string identifiers with row indeces as values. 
+The data (in the Rows slice), header, and index are all exported and can be directly modified for greater flexibility 
+(although this can lead to errors).  
 
 	Rows   [][]string
 	Header map[string]int
@@ -213,6 +157,36 @@ Adds row to dataframe. If using an index, the index column will be subset from t
 Converts given row to header. Subsets index column if using an index.  
 
 ### Getter Functions  
+
+#### Dataframe.Dimensions() (int, int)
+Returns number of columns and number of rows respectively.
+
+#### Dataframe.GetHeader() []string  
+Returns header as string slice.  
+
+#### Dataframe.GetIndex() []string  
+Returns index as string slice.  
+
+#### Dataframe.UpdateCell(idx interface{}, col interface{}, v string) error  
+Replaces given cell with value. Returns and error if idx an col are not a string or int.  
+
+#### Dataframe.GetCell(idx interface{}, col interface{}) (string, error)  
+Returns given cell from dataframe as a string. Returns an error if idx and col are not a string or int.  
+
+#### Dataframe.GetCellInt(idx interface{}, col interface{}) (int, error)  
+Returns given cell as an integer. Returns an error if idx and col are not a string or int.  
+
+#### Dataframe.GetCellFloat(idx interface{}, col interface{}) (float64, error)  
+Returns given cell as float64. Returns an error if idx and col are not a string or int.  
+
+#### Dataframe.GetRow(idx interface{}) ([]string, error)  
+Returns given row from dataframe. Returns an error if idx is not a string or int.  
+
+#### Dataframe.GetColumn(col interface{}) ([]string, error)  
+Returns given column from dataframe. Returns an error if col is not a string or int.  
+
+#### Dataframe.GetColumnUnique(col interface{}) ([]string, error)  
+Returns unique values from given column. Returns an error if col is not a string or int.  
 
 ### Other 
 
