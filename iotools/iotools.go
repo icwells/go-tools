@@ -191,6 +191,9 @@ func ReadFile(infile string, header bool) ([][]string, map[string]int) {
 		}
 		s := strings.Split(line, d)
 		if !header {
+			for idx, i := range s {
+				s[idx] = strings.TrimSpace(i)
+			}
 			ret = append(ret, s)
 		} else {
 			h = GetHeader(s)
