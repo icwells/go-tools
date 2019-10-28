@@ -158,8 +158,11 @@ Converts given row to header. Subsets index column if using an index.
 
 ### Getter Functions  
 
+#### Dataframe.Length() int
+Returns number of rows.  
+
 #### Dataframe.Dimensions() (int, int)
-Returns number of columns and number of rows respectively.
+Returns number of columns and number of rows respectively.  
 
 #### Dataframe.GetHeader() []string  
 Returns header as string slice.  

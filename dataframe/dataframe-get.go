@@ -15,6 +15,11 @@ func (d *Dataframe) Dimensions() (int, int) {
 	return d.ncol, d.nrow
 }
 
+func (d *Dataframe) Length() int {
+	// Returns number of rows
+	return d.nrow
+}
+
 func (d *Dataframe) GetHeader() []string {
 	// Returns header as string slice
 	ret := make([]string, len(d.Header))
