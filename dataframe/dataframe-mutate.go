@@ -2,13 +2,6 @@
 
 package dataframe
 
-func (d *Dataframe) Extend(df *Dataframe) {
-	// Adds rows from new dataframe
-	for _, i := range df.Rows {
-		d.AddRow(i)
-	}
-}
-
 func (d *Dataframe) decrememntMap(m map[string]int, n int) map[string]int {
 	// Deletes given entry from index/header and decrements higher values
 	for k, v := range m {
