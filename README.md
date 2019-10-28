@@ -156,6 +156,9 @@ Adds row to dataframe. If using an index, the index column will be subset from t
 #### Dataframe.SetHeader(row []string)  
 Converts given row to header. Subsets index column if using an index.  
 
+Dataframe.Extend(df *Dataframe)  
+Adds rows from new dataframe to existing Rows slice.  
+
 ### Getter Functions  
 
 #### Dataframe.Length() int
