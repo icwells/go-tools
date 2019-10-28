@@ -193,7 +193,10 @@ Returns unique values from given column. Returns an error if col is not a string
 
 ### Other 
 
-#### Dataframe) ToCSV(outfile string)  
+#### Dataframe.ToSlice() [][]string  
+Returns dataframe as slice of string slices (inserts index values if needed).  
+
+#### Dataframe.ToCSV(outfile string)  
 Writes rows to csv with index and header. Includes header value for index column.  
 
 #### Dataframe.DeleteRow(idx interface{}) error  

@@ -88,20 +88,28 @@ func DataFrameFromFile(infile string, column int) *Dataframe {
 	return d
 }
 
-func (d *Dataframe) ToCSV(outfile string) {
-	// Writes rows to csv
-	var tmp [][]string
-	h := strings.Join(d.GetHeader(), ",")
+func (d *Dataframe) ToSlice() [][]string {
+	// Returns dataframe as slice of string slices (inserts index values if needed)
+	var ret [][]string
 	if d.col >= 0 {
-		// Prepend index column name and index to rows
-		h = d.iname + "," + h
+		// Prepend index to rows
 		index := d.GetIndex()
 		for idx, i := range d.Rows {
 			row := append([]string{index[idx]}, i...)
-			tmp = append(tmp, row)
+			ret = append(ret, row)
 		}
 	} else {
-		tmp = d.Rows
+		ret = d.Rows
 	}
-	iotools.WriteToCSV(outfile, h, tmp)
+	return ret
+}
+
+func (d *Dataframe) ToCSV(outfile string) {
+	// Writes rows to csv
+	h := strings.Join(d.GetHeader(), ",")
+	if d.col >= 0 {
+		// Prepend index column name
+		h = d.iname + "," + h
+	}
+	iotools.WriteToCSV(outfile, h, d.ToSlice())
 }
