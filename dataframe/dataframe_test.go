@@ -18,6 +18,22 @@ func getTestSlice() [][]string {
 	}
 }
 
+func evaluateSliceRow(t *testing.T, df *Dataframe, rows [][]string) {
+	for idx, i := range rows[1:] {
+		_, e := df.subsetRow(i)
+		exp := strings.Join(e[1:3], " ")
+		a, err := df.SliceRow(idx, 1, 3)
+		if err != nil {
+			t.Errorf("Error slicing row %d: %v", idx, err)
+		} else {
+			act := strings.Join(a, " ")
+			if act != exp {
+				t.Errorf("Actual slice %s does not equal expected: %s", act, exp)
+			}
+		}
+	}
+}
+
 func evaluateGetRow(t *testing.T, df *Dataframe, rows [][]string) {
 	// Tests getRows
 	for idx, i := range rows[1:] {
@@ -130,6 +146,7 @@ func evaluateDF(t *testing.T, df *Dataframe, rows [][]string, index int) {
 	evaluateGetCell(t, df, "12.1", index)
 	evaluateGetRow(t, df, rows)
 	evaluateGetColumn(t, df, rows)
+	evaluateSliceRow(t, df, rows)
 }
 
 func setRows(t *testing.T, rows [][]string, column int) *Dataframe {

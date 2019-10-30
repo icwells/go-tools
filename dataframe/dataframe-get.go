@@ -126,6 +126,28 @@ func (d *Dataframe) GetRow(idx interface{}) ([]string, error) {
 	return ret, err
 }
 
+func (d *Dataframe) SliceRow(idx interface{}, start interface{}, end interface{}) ([]string, error) {
+	// Reutrns row[start:end]
+	var ret []string
+	r, s, err := d.getIndeces(idx, start)
+	if err == nil {
+		var e int
+		e, err = d.getIndex(d.Header, d.ncol, "Header", end)
+		if err == nil {
+			if e > s {
+				if e-s == 1 {
+					ret = append(ret, d.Rows[r][s])
+				} else {
+					ret = d.Rows[r][s:e]
+				}
+			} else {
+				err = errors.New(fmt.Sprintf("Starting index %d is greater than %d.", s, e))
+			}
+		}
+	}
+	return ret, err
+}
+
 func (d *Dataframe) GetColumn(col interface{}) ([]string, error) {
 	// Returns given column from dataframe
 	var ret []string
