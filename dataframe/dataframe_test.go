@@ -21,8 +21,8 @@ func getTestSlice() [][]string {
 func evaluateSliceRow(t *testing.T, df *Dataframe, rows [][]string) {
 	for idx, i := range rows[1:] {
 		_, e := df.subsetRow(i)
-		exp := strings.Join(e[1:3], " ")
-		a, err := df.SliceRow(idx, 1, 3)
+		exp := strings.Join(e[1:], " ")
+		a, err := df.SliceRow(idx, 1, -1)
 		if err != nil {
 			t.Errorf("Error slicing row %d: %v", idx, err)
 		} else {

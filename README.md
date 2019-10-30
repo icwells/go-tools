@@ -185,6 +185,9 @@ Returns given cell as float64. Returns an error if idx and col are not a string 
 #### Dataframe.GetRow(idx interface{}) ([]string, error)  
 Returns given row from dataframe. Returns an error if idx is not a string or int.  
 
+#### Dataframe.SliceRow(idx interface{}, start interface{}, end interface{}) ([]string, error)  
+Returns subset of row (idx) between start and end (row[start:end]). A negative value for end will return all values after start (row[start:]).  
+
 #### Dataframe.GetColumn(col interface{}) ([]string, error)  
 Returns given column from dataframe. Returns an error if col is not a string or int.  
 

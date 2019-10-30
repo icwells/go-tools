@@ -133,6 +133,10 @@ func (d *Dataframe) SliceRow(idx interface{}, start interface{}, end interface{}
 	if err == nil {
 		var e int
 		e, err = d.getIndex(d.Header, d.ncol, "Header", end)
+		if e < 0 {
+			e = d.ncol
+			err = nil
+		}
 		if err == nil {
 			if e > s {
 				if e-s == 1 {
