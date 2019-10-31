@@ -42,50 +42,81 @@ func (d *Dataframe) AddRow(row []string) error {
 	// Adds row to dataframe
 	var err error
 	index, r := d.subsetRow(row)
-	d.Rows = append(d.Rows, r)
-	if index != "" {
-		if _, ex := d.Index[index]; !ex {
-			d.Index[index] = d.nrow
-		} else {
-			err = errors.New(fmt.Sprintf("Value %s already found in index.", index))
+	if len(r) == d.ncol {
+		d.Rows = append(d.Rows, r)
+		if index != "" {
+			if _, ex := d.Index[index]; !ex {
+				d.Index[index] = d.nrow
+			} else {
+				err = errors.New(fmt.Sprintf("Value %s already found in index.", index))
+			}
 		}
+		d.nrow++
+	} else {
+		err = errors.New(fmt.Sprintf("Row length %d does not equal number of of columns %d.", len(r), d.ncol))
 	}
-	d.nrow++
 	return err
 }
 
-func (d *Dataframe) SetHeader(row []string) {
+func (d *Dataframe) SetHeader(row []string) error {
 	// Converts given row to header
+	var err error
+	if d.iname != "" {
+		// Determine index column number
+		d.Header = iotools.GetHeader(row)
+		idx, ex := d.Header[d.iname]
+		if ex {
+			d.col = idx
+		} else {
+			err = errors.New(fmt.Sprintf("Value %s cannot be found in header.", d.iname))
+		}
+	}
 	index, r := d.subsetRow(row)
-	if index != "" {
+	if index != "" && d.iname == "" {
+		// Store index column name
 		d.iname = index
 	}
 	d.Header = iotools.GetHeader(r)
 	d.ncol = len(d.Header)
+	return err
 }
 
-func NewDataFrame(column int) *Dataframe {
+func (d *Dataframe) setIndexColumn(column interface{}) error {
+	// Assigns column tp d.col/d.iname
+	var err error
+	switch i := column.(type) {
+	case string:
+		d.iname = string(i)
+	case int:
+		d.col = int(i)
+	default:
+		err = errors.New(fmt.Sprintf("%v is not a valid header index. Must be string or integer.", i))
+	}
+	return err
+}
+
+func NewDataFrame(column interface{}) (*Dataframe, error) {
 	// Initializes empty struct
 	d := new(Dataframe)
-	d.col = column
+	err := d.setIndexColumn(column)
 	d.Header = make(map[string]int)
 	d.Index = make(map[string]int)
-	return d
+	return d, err
 }
 
-func DataFrameFromFile(infile string, column int) *Dataframe {
+func DataFrameFromFile(infile string, column interface{}) (*Dataframe, error) {
 	// Reads dataframe from text file
 	var tmp [][]string
-	d := NewDataFrame(column)
+	d, err := NewDataFrame(column)
 	tmp, d.Header = iotools.ReadFile(infile, true)
 	if d.col >= 0 {
 		// Remove index column from header
-		d.SetHeader(d.GetHeader())
+		err = d.SetHeader(d.GetHeader())
 	}
 	for _, i := range tmp {
 		d.AddRow(i)
 	}
-	return d
+	return d, err
 }
 
 func (d *Dataframe) ToSlice() [][]string {

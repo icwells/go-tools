@@ -149,14 +149,18 @@ func evaluateDF(t *testing.T, df *Dataframe, rows [][]string, index int) {
 	evaluateSliceRow(t, df, rows)
 }
 
-func setRows(t *testing.T, rows [][]string, column int) *Dataframe {
+func setRows(t *testing.T, rows [][]string, column interface{}) *Dataframe {
 	// Appends rows to dataframe
-	df := NewDataFrame(column)
-	df.SetHeader(rows[0])
-	for _, i := range rows[1:] {
-		err := df.AddRow(i)
-		if err != nil {
-			t.Errorf("Error setting dataframe row: %v", err)
+	df, err := NewDataFrame(column)
+	if err != nil {
+		t.Error(err)
+	} else {
+		df.SetHeader(rows[0])
+		for _, i := range rows[1:] {
+			err := df.AddRow(i)
+			if err != nil {
+				t.Errorf("Error setting dataframe row: %v", err)
+			}
 		}
 	}
 	return df
@@ -168,6 +172,8 @@ func TestDataFrame(t *testing.T) {
 		df := setRows(t, rows, i)
 		evaluateDF(t, df, rows, i)
 	}
+	df := setRows(t, rows, "ID")
+	evaluateDF(t, df, rows, 2)
 }
 
 func TestDeleteRow(t *testing.T) {
