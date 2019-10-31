@@ -142,18 +142,18 @@ There are two ways to make a new dataframe. One is to initialize an empty struct
 directly from a file. The columnn value indicates which column should be used for the row index. A negative value 
 will omit the index (note that sting indeces cannot be used if there is not index).  
 
-#### dataframe.NewDataFrame(column int) *Dataframe  
-Initializes an empty dataframe. The given column number of any input data will be used as the index column (a negative value will omit the index).  
+#### dataframe.NewDataFrame(column interface{}) (*Dataframe, error)  
+Initializes an empty dataframe. The given column name/number (must be string or int) of any input data will be used as the index column (a negative value will omit the index).  
 
-#### DataFrameFromFile(infile string, column int) *Dataframe  
-Creates a dataframe the same as above, but loads in data from the given input file. the first row is assumed to be the header.  
+#### DataFrameFromFile(infile string, column interface{}) (*Dataframe, error)  
+Creates a dataframe the same as above, but loads in data from the given input file. The first row is assumed to be the header.  
 
 ### Setter Functions  
 
 #### Dataframe.AddRow(row []string) error  
 Adds row to dataframe. If using an index, the index column will be subset from the slice and added to the index. Returns an error if the index value is already present.  
 
-#### Dataframe.SetHeader(row []string)  
+#### Dataframe.SetHeader(row []string) error  
 Converts given row to header. Subsets index column if using an index.  
 
 ### Getter Functions  
