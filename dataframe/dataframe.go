@@ -77,6 +77,7 @@ func (d *Dataframe) SetHeader(row []string) error {
 		d.iname = index
 	}
 	d.Header = iotools.GetHeader(r)
+	fmt.Println(row)
 	d.ncol = len(d.Header)
 	return err
 }
@@ -109,12 +110,16 @@ func DataFrameFromFile(infile string, column interface{}) (*Dataframe, error) {
 	var tmp [][]string
 	d, err := NewDataFrame(column)
 	tmp, d.Header = iotools.ReadFile(infile, true)
+	d.ncol = len(d.Header)
 	if d.col >= 0 {
 		// Remove index column from header
 		err = d.SetHeader(d.GetHeader())
 	}
 	for _, i := range tmp {
-		d.AddRow(i)
+		err = d.AddRow(i)
+		if err != nil {
+			break
+		}
 	}
 	return d, err
 }
