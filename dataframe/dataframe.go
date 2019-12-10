@@ -77,7 +77,6 @@ func (d *Dataframe) SetHeader(row []string) error {
 		d.iname = index
 	}
 	d.Header = iotools.GetHeader(r)
-	fmt.Println(row)
 	d.ncol = len(d.Header)
 	return err
 }
