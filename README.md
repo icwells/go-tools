@@ -27,83 +27,16 @@ Then change the import path to "github.com/icwells/simpleset" and the call the c
 ## iotools  
 Wraps common file/path functions with error handling and provides basic input/output functions.  
 
-#### iotools.CheckError(msg string, err error, code int) bool  
-Returns true if err is nil. If err is not nil and code is 0, it prints a warning formatted with 
-msg and returns false. Otherwise, it prints and error formated with message and exits with code.  
-
-#### iotools.OpenFile(file string) *os.File  
-Returns pointer to File type. Prints an error and exits if file cannot be opened.  
-
-#### iotools.CreateFile(file string) *os.File   
-Creates new file and returns pointer. Prints an error and exits if file cannot be created.
-
-#### iotools.AppendFile(file string) *os.File   
-Returns pointer to file to append to. Creates file if it does not exist. 
-Prints an error and exits if file cannot be opened or created.
-
-#### iotools.GetScanner(f *os.File) *bufio.Scanner  
-Returns scanner for either gzipped or uncompressed file.  
-
-#### iotools.Exists(path string) bool
-Returns true if file or directory exists. Otherwise, returns false.  
-
-#### iotools.getGOPATH() string
-Returns GOPATH from environment. Prints error and exits if it cannot detemermine GOPATH.  
-
-#### iotools.FormatPath(path string, makenew bool) (string, bool)  
-Returns path name with trailing slash and result of Exists(path). Makes directory if makenew == true.  
-
-#### iotools.GetExt(file string) string  
-Returns extension from file name.  
-
-#### iotools.GetFileName(file string) string  
-Returns base name from file name.  
-
-#### iotools.GetParent(file string) string  
-Returns name of parent directory from file or directory.  
-
-#### iotools.GetHeader(header []string) map[string]int  
-Returns map of column names matched to index numbers for simple header parsing.  
-
-#### iotools.GetDelim(header string) string  
-Returns delimiter from header of a text file.  
-
-#### iotools.ReadFile(infile string, header bool) ([][]string, map[string]int)  
-Reads tab/comma/space delimiter text files, trims newlines, and returns header as map of 
-column name: index and data as slice of rows split by delimiter.  
-
-#### iotools.WriteToCSV(outfile, header string, results [][]string)  
-Writes header and slice of string slices to comma seperated file.  
-Prints error if line cannot be written but does not exit.  
+See GoDocs link for usage.
 
 ## strarray  
 Contains functions for working with slices and maps of strings, as well as a Python-style set.   
 
-#### TitleCase(t string) string  
-Manually converts term to title case (strings.Title is buggy).  
-
-#### strarray.InSliceStr(l []string, s string) bool  
-Returns true if s is in l.  
-
-#### strarray.InSliceSli(l [][]string, s string, c int) bool  
-Returns true if s is in column c in l  
-
-#### strarray.SliceIndex(l []string, v string) int  
-Returns first index v value in slice. Returns -1 if it is not found.  
-
-#### strarray.SliceCount(s []string, v string) int  
-Returns number of occurances of v in s.  
-
-#### strarray.DeleteSliceIndex(s []string, idx int) []string  
-Deletes item at idx while preventing index errors.  
-
-##### strarray.DeleteSliceValue(s []string, v string) []string  
-Deletes all occurances of v from s.  
+See GoDocs link for usage.
 
 ## dataframe  
 Provides a variable length, two-dimensional array of strings which can be indexed by row/column names 
 or numbers. It is meant to quickly and cleanly parse input data, particuly when the data of interest contains text. 
-This is still in developement, and there are more features to come.  
 
 ### The Dataframe Struct  
 The Dataframe struct stores tabular data in a two-dimensional slice of strings. It stores a header as a map with string keys 
@@ -122,7 +55,7 @@ will omit the index (note that sting indeces cannot be used if there is not inde
 #### dataframe.NewDataFrame(column interface{}) (*Dataframe, error)  
 Initializes an empty dataframe. The given column name/number (must be string or int) of any input data will be used as the index column (a negative value will omit the index).  
 
-#### DataFrameFromFile(infile string, column interface{}) (*Dataframe, error)  
+#### dataframe.DataFrameFromFile(infile string, column interface{}) (*Dataframe, error)  
 Creates a dataframe the same as above, but loads in data from the given input file. The first row is assumed to be the header.  
 
 ### Setter Functions  

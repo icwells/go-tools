@@ -10,18 +10,18 @@ import (
 	"strings"
 )
 
+// Dimensions returns row and column lengths (respectively).
 func (d *Dataframe) Dimensions() (int, int) {
-	// Returns row and column lengths
 	return d.ncol, d.nrow
 }
 
+// Length returns the number of rows.
 func (d *Dataframe) Length() int {
-	// Returns number of rows
 	return d.nrow
 }
 
+// GetHeader returns the header as string slice.
 func (d *Dataframe) GetHeader() []string {
-	// Returns header as string slice
 	ret := make([]string, len(d.Header))
 	for k, v := range d.Header {
 		ret[v] = k
@@ -29,8 +29,8 @@ func (d *Dataframe) GetHeader() []string {
 	return ret
 }
 
+// GetIndex returns index as string slice.
 func (d *Dataframe) GetIndex() []string {
-	// Returns index as string slice
 	ret := make([]string, len(d.Index))
 	for k, v := range d.Index {
 		ret[v] = k
@@ -75,8 +75,8 @@ func (d *Dataframe) getIndeces(idx interface{}, col interface{}) (int, int, erro
 	return r, c, err
 }
 
+// UpdateCell replaces the value in a given cell with v.
 func (d *Dataframe) UpdateCell(idx interface{}, col interface{}, v string) error {
-	// Replaces given cell with v
 	r, c, err := d.getIndeces(idx, col)
 	if err == nil {
 		d.Rows[r][c] = v
@@ -84,8 +84,8 @@ func (d *Dataframe) UpdateCell(idx interface{}, col interface{}, v string) error
 	return err
 }
 
+// GetCell returns the value of the given cell from dataframe.
 func (d *Dataframe) GetCell(idx interface{}, col interface{}) (string, error) {
-	// Returns given cell from dataframe
 	var ret string
 	r, c, err := d.getIndeces(idx, col)
 	if err == nil {
@@ -94,8 +94,8 @@ func (d *Dataframe) GetCell(idx interface{}, col interface{}) (string, error) {
 	return ret, err
 }
 
+// GetCellInt returns the value of the given cell as int. Returns an error if it cannot be converted.
 func (d *Dataframe) GetCellInt(idx interface{}, col interface{}) (int, error) {
-	// Converts given cell to int
 	var ret int
 	val, err := d.GetCell(idx, col)
 	if err == nil {
@@ -106,8 +106,8 @@ func (d *Dataframe) GetCellInt(idx interface{}, col interface{}) (int, error) {
 	return ret, err
 }
 
+// GetCellFloat returns the value of the given cell as float64. Returns an error if it cannot be converted.
 func (d *Dataframe) GetCellFloat(idx interface{}, col interface{}) (float64, error) {
-	// Converts given cell to float64
 	var ret float64
 	val, err := d.GetCell(idx, col)
 	if err == nil {
@@ -116,8 +116,8 @@ func (d *Dataframe) GetCellFloat(idx interface{}, col interface{}) (float64, err
 	return ret, err
 }
 
+// GetRow returns given row from dataframe. Does not insert index value.
 func (d *Dataframe) GetRow(idx interface{}) ([]string, error) {
-	// Returns given row from dataframe
 	var ret []string
 	r, err := d.getIndex(d.Index, d.nrow, "Index", idx)
 	if err == nil {
@@ -126,8 +126,8 @@ func (d *Dataframe) GetRow(idx interface{}) ([]string, error) {
 	return ret, err
 }
 
+// SliceRow returns a slice of the given row between start and end (not including the value at end).
 func (d *Dataframe) SliceRow(idx interface{}, start interface{}, end interface{}) ([]string, error) {
-	// Reutrns row[start:end]
 	var ret []string
 	r, s, err := d.getIndeces(idx, start)
 	if err == nil {
@@ -152,8 +152,8 @@ func (d *Dataframe) SliceRow(idx interface{}, start interface{}, end interface{}
 	return ret, err
 }
 
+// GetColumn returns the given column from dataframe.
 func (d *Dataframe) GetColumn(col interface{}) ([]string, error) {
-	// Returns given column from dataframe
 	var ret []string
 	c, err := d.getIndex(d.Header, d.ncol, "Header", col)
 	if err == nil {
@@ -164,8 +164,8 @@ func (d *Dataframe) GetColumn(col interface{}) ([]string, error) {
 	return ret, err
 }
 
+// GetColumnUnique returns all unique values from the given column.
 func (d *Dataframe) GetColumnUnique(col interface{}) ([]string, error) {
-	// Returns unique values from given column
 	ret := simpleset.NewStringSet()
 	c, err := d.getIndex(d.Header, d.ncol, "Header", col)
 	if err == nil {

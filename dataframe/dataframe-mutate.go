@@ -14,8 +14,8 @@ func (d *Dataframe) decrememntMap(m map[string]int, n int) map[string]int {
 	return m
 }
 
+// DeleteRow removes the given row from dataframe.
 func (d *Dataframe) DeleteRow(idx interface{}) error {
-	// Deletes given row
 	r, err := d.getIndex(d.Index, d.nrow, "Index", idx)
 	if err == nil {
 		// Remove row and decrement counter
@@ -34,8 +34,8 @@ func (d *Dataframe) DeleteRow(idx interface{}) error {
 	return err
 }
 
+// DeleteColumn removes the given column from dataframe.
 func (d *Dataframe) DeleteColumn(col interface{}) error {
-	// Deletes given row
 	c, err := d.getIndex(d.Header, d.ncol, "Header", col)
 	if err == nil {
 		// Remove row and decrement counter

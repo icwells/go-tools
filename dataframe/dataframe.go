@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// Stores data as a two-dimensional string slice with header and index as maps or named indeces.
 type Dataframe struct {
 	Rows   [][]string
 	Header map[string]int
@@ -38,8 +39,8 @@ func (d *Dataframe) subsetRow(row []string) (string, []string) {
 	return index, ret
 }
 
+// AddRow adds a string slice to dataframe and stores the index value in Index if using.
 func (d *Dataframe) AddRow(row []string) error {
-	// Adds row to dataframe
 	var err error
 	index, r := d.subsetRow(row)
 	if len(r) == d.ncol {
@@ -58,8 +59,8 @@ func (d *Dataframe) AddRow(row []string) error {
 	return err
 }
 
+// SetHeader converts the given row to header map.
 func (d *Dataframe) SetHeader(row []string) error {
-	// Converts given row to header
 	var err error
 	if d.iname != "" {
 		// Determine index column number
@@ -95,8 +96,8 @@ func (d *Dataframe) setIndexColumn(column interface{}) error {
 	return err
 }
 
+// NewDataFrame returns an empty dataframe struct.
 func NewDataFrame(column interface{}) (*Dataframe, error) {
-	// Initializes empty struct
 	d := new(Dataframe)
 	err := d.setIndexColumn(column)
 	d.Header = make(map[string]int)
@@ -104,8 +105,8 @@ func NewDataFrame(column interface{}) (*Dataframe, error) {
 	return d, err
 }
 
+// DataFrameFromFile creates a dataframe and loads in data from the given input file. The first row is assumed to be the header.
 func DataFrameFromFile(infile string, column interface{}) (*Dataframe, error) {
-	// Reads dataframe from text file
 	var tmp [][]string
 	d, err := NewDataFrame(column)
 	tmp, d.Header = iotools.ReadFile(infile, true)
@@ -123,8 +124,8 @@ func DataFrameFromFile(infile string, column interface{}) (*Dataframe, error) {
 	return d, err
 }
 
+// ToSlice returns dataframe as a two-dimensional string slice (inserts index values if needed but does not include header).
 func (d *Dataframe) ToSlice() [][]string {
-	// Returns dataframe as slice of string slices (inserts index values if needed)
 	var ret [][]string
 	if d.col >= 0 {
 		// Prepend index to rows
@@ -139,8 +140,8 @@ func (d *Dataframe) ToSlice() [][]string {
 	return ret
 }
 
+// ToCSV writes datframe to csv with header and index inderted.
 func (d *Dataframe) ToCSV(outfile string) {
-	// Writes rows to csv
 	h := strings.Join(d.GetHeader(), ",")
 	if d.col >= 0 {
 		// Prepend index column name
