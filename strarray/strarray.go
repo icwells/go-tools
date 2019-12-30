@@ -6,8 +6,8 @@ import (
 	"strings"
 )
 
+// TitleCase manually converts term to title case (strings.Title is buggy).
 func TitleCase(t string) string {
-	// Manually converts term to title case (strings.Title is buggy)
 	var query []string
 	s := strings.Split(t, " ")
 	for _, i := range s {
@@ -19,6 +19,7 @@ func TitleCase(t string) string {
 	return strings.Join(query, " ")
 }
 
+// InSliceStr returns true if s is in l.
 func InSliceStr(l []string, s string) bool {
 	// Returns true if s is in l
 	in := false
@@ -31,8 +32,8 @@ func InSliceStr(l []string, s string) bool {
 	return in
 }
 
+// InSliceSli returns true if s is in column c in l.
 func InSliceSli(l [][]string, s string, c int) bool {
-	// Returns true if s is in column c in l
 	in := false
 	for _, i := range l {
 		if c < len(i) {
@@ -45,8 +46,8 @@ func InSliceSli(l [][]string, s string, c int) bool {
 	return in
 }
 
+// SliceIndex returns the first index of v in l.
 func SliceIndex(l []string, v string) int {
-	// Returns first index of v in l
 	ret := -1
 	for idx, i := range l {
 		if i == v {
@@ -57,8 +58,8 @@ func SliceIndex(l []string, v string) int {
 	return ret
 }
 
+// SliceCount returns the number of occurances of v in s.
 func SliceCount(s []string, v string) int {
-	// Returns number of occurances of v in s
 	ret := 0
 	for _, i := range s {
 		if i == v {
@@ -68,8 +69,8 @@ func SliceCount(s []string, v string) int {
 	return ret
 }
 
+// DeleteSliceIndex deletes item at idx while preventing index errors.
 func DeleteSliceIndex(s []string, idx int) []string {
-	// Deletes item at idx while preventing index errors
 	if len(s) > 0 {
 		if idx == 0 {
 			s = s[idx+1:]
@@ -82,8 +83,8 @@ func DeleteSliceIndex(s []string, idx int) []string {
 	return s
 }
 
+// DeleteSliceValue deletes all occurances of v from s.
 func DeleteSliceValue(s []string, v string) []string {
-	// Deletes all occurances of v from s
 	var ret []string
 	for _, i := range s {
 		if i != v {

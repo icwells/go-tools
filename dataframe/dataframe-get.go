@@ -5,7 +5,7 @@ package dataframe
 import (
 	"errors"
 	"fmt"
-	"github.com/icwells/go-tools/strarray"
+	"github.com/icwells/simpleset"
 	"strconv"
 	"strings"
 )
@@ -166,12 +166,12 @@ func (d *Dataframe) GetColumn(col interface{}) ([]string, error) {
 
 func (d *Dataframe) GetColumnUnique(col interface{}) ([]string, error) {
 	// Returns unique values from given column
-	ret := strarray.NewSet()
+	ret := simpleset.NewStringSet()
 	c, err := d.getIndex(d.Header, d.ncol, "Header", col)
 	if err == nil {
 		for _, i := range d.Rows {
 			ret.Add(i[c])
 		}
 	}
-	return ret.ToSlice(), err
+	return ret.ToStringSlice(), err
 }

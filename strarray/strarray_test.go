@@ -139,36 +139,3 @@ func TestDeleteSliceValue(t *testing.T) {
 		}
 	}
 }
-
-func evaluateLength(t *testing.T, a, e int) {
-	// Compares actual length to expected
-	if a != e {
-		t.Errorf("Actual length %d does nto equal expected: %d", a, e)
-	}
-}
-
-func evaluateBool(t *testing.T, a, e bool) {
-	// Compares results of inset
-	if a != e {
-		t.Errorf("Actual InSet value %v does nto equal expected: %v", a, e)
-	}
-}
-
-func TestSet(t *testing.T) {
-	// Tests set attributes
-	cases := []string{"a", "b", "c", "d", "e"}
-	s := NewSet()
-	evaluateLength(t, s.Length(), 0)
-	for idx, i := range cases {
-		s.Add(i)
-		evaluateLength(t, s.Length(), idx+1)
-		evaluateBool(t, s.InSet(i), true)
-	}
-	l := s.Length()
-	for _, i := range cases {
-		s.Pop(i)
-		l--
-		evaluateLength(t, s.Length(), l)
-		evaluateBool(t, s.InSet(i), false)
-	}
-}
