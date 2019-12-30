@@ -6,19 +6,23 @@
 
 Copyright 2019 by Shawn Rupp
 
-1. [Description](#Description)
-2. [Installation](#Installation)  
-3. [iotools](#iotools)  
-4. [strarray](#strarray)  
-5. [Set](#Set)  
-6. [dataframe](#dataframe)
-
-## Description  
+1. [Installation](#Installation)  
+2. [iotools](#iotools)  
+3. [strarray](#strarray)  
+4. [dataframe](#dataframe)
 
 ## Installation  
 	go get github.com/icwells/go-tools/dataframe  
 	go get github.com/icwells/go-tools/iotools  
 	go get github.com/icwells/go-tools/strarray  
+
+## Note: strarray.Set is deprecated.  
+It can be replaced by [simpleset](https://github.com/icwells/simpleset). Simply install simpleset:  
+
+	go get github.com/icwells/simpleset   
+
+Then change the import path to "github.com/icwells/simpleset" and the call the constructor function to simpleset.NewStringSet() 
+(Note that this will return a pointer).  
 
 ## iotools  
 Wraps common file/path functions with error handling and provides basic input/output functions.  
@@ -95,33 +99,6 @@ Deletes item at idx while preventing index errors.
 
 ##### strarray.DeleteSliceValue(s []string, v string) []string  
 Deletes all occurances of v from s.  
-
-### Set  
-The set struct is a simple python-style set for strings.  
-
-#### strarray.NewSet() Set
-Initializes new set.  
-
-#### strarray.ToSet(s []string) Set  
-Converts slice of strings to set.  
-
-#### set.Length()  
-Returns length of set.  
-
-#### set.Add(value string)  
-Adds string value to set.  
-
-#### set.Extend(v []string)  
-Adds all elements of slice to set.  
-
-#### set.Pop(v string)  
-Removes v from set.  
-
-#### set.InSet(value string)  
-Reurns true if value is in the set. Returns false if it is not.  
-
-#### set.ToSlice() []string  
-Returns set as a sorted string slice.
 
 ## dataframe  
 Provides a variable length, two-dimensional array of strings which can be indexed by row/column names 

@@ -45,7 +45,7 @@ func TestGetExt(t *testing.T) {
 	for _, i := range cases {
 		actual := GetExt(i.file)
 		if actual != i.ext {
-			msg := fmt.Sprintf("Extension for %s identified as %s", i.file, i.ext)
+			msg := fmt.Sprintf("Extension for %s identified as %s", i.file, actual)
 			t.Error(msg)
 		}
 	}
