@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// Stores data as a two-dimensional string slice with header and index as maps or named indeces.
+// Dataframe stores data as a two-dimensional string slice with header and index as maps or named indeces.
 type Dataframe struct {
 	Rows   [][]string
 	Header map[string]int
@@ -48,12 +48,12 @@ func (d *Dataframe) AddRow(row []string) error {
 			if _, ex := d.Index[index]; !ex {
 				d.Index[index] = d.nrow
 			} else {
-				err = fmt.Errorf("Value %s already found in index.", index)
+				err = fmt.Errorf("Value %s already found in index", index)
 			}
 		}
 		d.nrow++
 	} else {
-		err = fmt.Errorf("Row length %d does not equal number of of columns %d.", len(r), d.ncol)
+		err = fmt.Errorf("Row length %d does not equal number of of columns %d", len(r), d.ncol)
 	}
 	return err
 }
@@ -68,7 +68,7 @@ func (d *Dataframe) SetHeader(row []string) error {
 		if ex {
 			d.col = idx
 		} else {
-			err = fmt.Errorf("Value %s cannot be found in header.", d.iname)
+			err = fmt.Errorf("Value %s cannot be found in header", d.iname)
 		}
 	}
 	index, r := d.subsetRow(row)
@@ -90,7 +90,7 @@ func (d *Dataframe) setIndexColumn(column interface{}) error {
 	case int:
 		d.col = int(i)
 	default:
-		err = fmt.Errorf("%v is not a valid header index. Must be string or integer.", i)
+		err = fmt.Errorf("%v is not a valid header index. Must be string or integer", i)
 	}
 	return err
 }
@@ -104,7 +104,7 @@ func NewDataFrame(column interface{}) (*Dataframe, error) {
 	return d, err
 }
 
-// DataFrameFromFile creates a dataframe and loads in data from the given input file. The first row is assumed to be the header.
+// FromFile creates a dataframe and loads in data from the given input file. The first row is assumed to be the header.
 func FromFile(infile string, column interface{}) (*Dataframe, error) {
 	var tmp [][]string
 	d, err := NewDataFrame(column)

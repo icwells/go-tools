@@ -47,19 +47,19 @@ func (d *Dataframe) getIndex(m map[string]int, l int, name string, idx interface
 		if len(m) > 0 {
 			ret, ex = m[string(i)]
 			if !ex {
-				err = fmt.Errorf("%s name %v cannot be found.", name, i)
+				err = fmt.Errorf("%s name %v cannot be found", name, i)
 			}
 		} else {
-			err = fmt.Errorf("String indeces cannot be used if dataframe %s is not set.", strings.ToLower(name))
+			err = fmt.Errorf("String indeces cannot be used if dataframe %s is not set", strings.ToLower(name))
 		}
 	case int:
 		if i < l {
 			ret = int(i)
 		} else {
-			err = fmt.Errorf("Integer index %v exceeds %s length %d.", i, strings.ToLower(name), l)
+			err = fmt.Errorf("Integer index %v exceeds %s length %d", i, strings.ToLower(name), l)
 		}
 	default:
-		err = fmt.Errorf("%v is not a valid index. Must be string or integer.", i)
+		err = fmt.Errorf("%v is not a valid index. Must be string or integer", i)
 	}
 	return ret, err
 }
@@ -144,7 +144,7 @@ func (d *Dataframe) SliceRow(idx interface{}, start interface{}, end interface{}
 					ret = d.Rows[r][s:e]
 				}
 			} else {
-				err = fmt.Errorf("Starting index %d is greater than %d.", s, e)
+				err = fmt.Errorf("Starting index %d is greater than %d", s, e)
 			}
 		}
 	}
