@@ -27,12 +27,12 @@ Then change the import path to "github.com/icwells/simpleset" and the call the c
 ## iotools  
 Wraps common file/path functions with error handling and provides basic input/output functions.  
 
-See GoDocs link for usage.
+[![GoDoc](https://godoc.org/github.com/icwells/go-tools/iotools?status.svg)](https://godoc.org/github.com/icwells/go-tools/iotools)
 
 ## strarray  
 Contains functions for working with slices and maps of strings, as well as a Python-style set.   
 
-See GoDocs link for usage.
+[![GoDoc](https://godoc.org/github.com/icwells/go-tools/strarray?status.svg)](https://godoc.org/github.com/icwells/go-tools/strarray)
 
 ## dataframe  
 Provides a variable length, two-dimensional array of strings which can be indexed by row/column names 
@@ -55,5 +55,7 @@ will omit the index (note that sting indeces cannot be used if there is not inde
 #### dataframe.NewDataFrame(column interface{}) (*Dataframe, error)  
 Initializes an empty dataframe. The given column name/number (must be string or int) of any input data will be used as the index column (a negative value will omit the index).  
 
-#### dataframe.DataFrameFromFile(infile string, column interface{}) (*Dataframe, error)  
+#### dataframe.FromFile(infile string, column interface{}) (*Dataframe, error)  
 Creates a dataframe the same as above, but loads in data from the given input file. The first row is assumed to be the header.  
+
+[![GoDoc](https://godoc.org/github.com/icwells/go-tools/dataframe?status.svg)](https://godoc.org/github.com/icwells/go-tools/dataframe)

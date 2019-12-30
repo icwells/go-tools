@@ -3,7 +3,6 @@
 package dataframe
 
 import (
-	"errors"
 	"fmt"
 	"github.com/icwells/go-tools/iotools"
 	"strings"
@@ -49,12 +48,12 @@ func (d *Dataframe) AddRow(row []string) error {
 			if _, ex := d.Index[index]; !ex {
 				d.Index[index] = d.nrow
 			} else {
-				err = errors.New(fmt.Sprintf("Value %s already found in index.", index))
+				err = fmt.Errorf("Value %s already found in index.", index)
 			}
 		}
 		d.nrow++
 	} else {
-		err = errors.New(fmt.Sprintf("Row length %d does not equal number of of columns %d.", len(r), d.ncol))
+		err = fmt.Errorf("Row length %d does not equal number of of columns %d.", len(r), d.ncol)
 	}
 	return err
 }
@@ -69,7 +68,7 @@ func (d *Dataframe) SetHeader(row []string) error {
 		if ex {
 			d.col = idx
 		} else {
-			err = errors.New(fmt.Sprintf("Value %s cannot be found in header.", d.iname))
+			err = fmt.Errorf("Value %s cannot be found in header.", d.iname)
 		}
 	}
 	index, r := d.subsetRow(row)
@@ -91,7 +90,7 @@ func (d *Dataframe) setIndexColumn(column interface{}) error {
 	case int:
 		d.col = int(i)
 	default:
-		err = errors.New(fmt.Sprintf("%v is not a valid header index. Must be string or integer.", i))
+		err = fmt.Errorf("%v is not a valid header index. Must be string or integer.", i)
 	}
 	return err
 }
@@ -106,7 +105,7 @@ func NewDataFrame(column interface{}) (*Dataframe, error) {
 }
 
 // DataFrameFromFile creates a dataframe and loads in data from the given input file. The first row is assumed to be the header.
-func DataFrameFromFile(infile string, column interface{}) (*Dataframe, error) {
+func FromFile(infile string, column interface{}) (*Dataframe, error) {
 	var tmp [][]string
 	d, err := NewDataFrame(column)
 	tmp, d.Header = iotools.ReadFile(infile, true)
