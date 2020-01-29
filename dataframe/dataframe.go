@@ -101,6 +101,8 @@ func NewDataFrame(column interface{}) (*Dataframe, error) {
 	err := d.setIndexColumn(column)
 	d.Header = make(map[string]int)
 	d.Index = make(map[string]int)
+	d.nrow = 0
+	d.ncol = 0
 	return d, err
 }
 
