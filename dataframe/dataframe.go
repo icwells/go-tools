@@ -141,12 +141,26 @@ func (d *Dataframe) ToSlice() [][]string {
 	return ret
 }
 
-// ToCSV writes datframe to csv with header and index inderted.
-func (d *Dataframe) ToCSV(outfile string) {
-	h := strings.Join(d.GetHeader(), ",")
+// formatHeader formats header for writing
+func (d *Dataframe) formatHeader(sep string) string {
+	var ret []string
 	if d.col >= 0 {
 		// Prepend index column name
-		h = d.iname + "," + h
+		ret = append(ret, d.iname)
 	}
-	iotools.WriteToCSV(outfile, h, d.ToSlice())
+	ret = append(ret, d.GetHeader()...)
+	return strings.Join(ret, sep)
+}
+
+// Print writes the dataframe to the screen
+func (d *Dataframe) Print() {
+	fmt.Println(d.formatHeader("\t"))
+	for _, i := range d.ToSlice() {
+		fmt.Println(strings.Join(i, "\t"))
+	}
+}
+
+// ToCSV writes dataframe to csv with header and index inderted.
+func (d *Dataframe) ToCSV(outfile string) {
+	iotools.WriteToCSV(outfile, d.formatHeader(","), d.ToSlice())
 }
