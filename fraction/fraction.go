@@ -1,4 +1,4 @@
-// Defines struct for fraction type
+// fraction provides a struct to store fractions and provides mathmatical and conversion methods.
 
 package fraction
 
@@ -7,6 +7,7 @@ import (
 	"math"
 )
 
+// Fraction struct store the numerator and denominator of a fraction as integers.
 type Fraction struct {
 	Denominator int
 	Numerator   int
@@ -54,7 +55,7 @@ func (f *Fraction) Float() float64 {
 
 // Equals returns true if two fractions are equal.
 func (f *Fraction) Equals(v *Fraction) bool {
-	if f.Numerator == v.Numerator && f.Denominator == v.Denominator {
+	if f.Float() == v.Float() {
 		return true
 	}
 	return false
@@ -62,7 +63,7 @@ func (f *Fraction) Equals(v *Fraction) bool {
 
 // Less returns true if f is less than v.
 func (f *Fraction) Less(v *Fraction) bool {
-	if f.Numerator/f.Denominator < v.Numerator/v.Denominator {
+	if f.Float() < v.Float() {
 		return true
 	}
 	return false

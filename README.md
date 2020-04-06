@@ -6,15 +6,10 @@
 
 Copyright 2019 by Shawn Rupp
 
-1. [Installation](#Installation)  
-2. [iotools](#iotools)  
-3. [strarray](#strarray)  
-4. [dataframe](#dataframe)
-
-## Installation  
-	go get github.com/icwells/go-tools/dataframe  
-	go get github.com/icwells/go-tools/iotools  
-	go get github.com/icwells/go-tools/strarray  
+1. [dataframe](#dataframe)    
+2. [fraction](#fraction)  
+3. [iotools](#iotools)  
+4. [strarray](#strarray)  
 
 ## Note: strarray.Set is deprecated.  
 It can be replaced by [simpleset](https://github.com/icwells/simpleset). Simply install simpleset:  
@@ -24,19 +19,11 @@ It can be replaced by [simpleset](https://github.com/icwells/simpleset). Simply 
 Then change the import path to "github.com/icwells/simpleset" and the call the constructor function to simpleset.NewStringSet() 
 (Note that this will return a pointer).  
 
-## iotools  
-Wraps common file/path functions with error handling and provides basic input/output functions.  
-
-[![GoDoc](https://godoc.org/github.com/icwells/go-tools/iotools?status.svg)](https://godoc.org/github.com/icwells/go-tools/iotools)
-
-## strarray  
-Contains functions for working with slices and maps of strings, as well as a Python-style set.   
-
-[![GoDoc](https://godoc.org/github.com/icwells/go-tools/strarray?status.svg)](https://godoc.org/github.com/icwells/go-tools/strarray)
-
 ## dataframe  
 Provides a variable length, two-dimensional array of strings which can be indexed by row/column names 
 or numbers. It is meant to quickly and cleanly parse input data, particuly when the data of interest contains text. 
+
+	go get github.com/icwells/go-tools/dataframe  
 
 ### The Dataframe Struct  
 The Dataframe struct stores tabular data in a two-dimensional slice of strings. It stores a header as a map with string keys 
@@ -59,3 +46,22 @@ Initializes an empty dataframe. The given column name/number (must be string or 
 Creates a dataframe the same as above, but loads in data from the given input file. The first row is assumed to be the header.  
 
 [![GoDoc](https://godoc.org/github.com/icwells/go-tools/dataframe?status.svg)](https://godoc.org/github.com/icwells/go-tools/dataframe)
+
+## fraction  
+Provides a struct to store fractions and provides mathmatical and conversion methods.  
+
+	go get github.com/icwells/go-tools/fraction  
+
+## iotools  
+Wraps common file/path functions with error handling and provides basic input/output functions.  
+
+	go get github.com/icwells/go-tools/iotools  
+
+[![GoDoc](https://godoc.org/github.com/icwells/go-tools/iotools?status.svg)](https://godoc.org/github.com/icwells/go-tools/iotools)
+
+## strarray  
+Contains functions for working with slices and maps of strings, as well as a Python-style set.   
+
+	go get github.com/icwells/go-tools/strarray  
+
+[![GoDoc](https://godoc.org/github.com/icwells/go-tools/strarray?status.svg)](https://godoc.org/github.com/icwells/go-tools/strarray)
