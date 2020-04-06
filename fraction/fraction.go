@@ -7,13 +7,13 @@ import (
 	"math"
 )
 
-// Fraction struct store the numerator and denominator of a fraction as integers.
+// Fraction struct stores the numerator and denominator of a fraction as integers.
 type Fraction struct {
 	Denominator int
 	Numerator   int
 }
 
-// Returns new fraction with n as numerator and d as denominator. Reduces fraction if possible.
+// NewFraction returns new fraction with n as numerator and d as denominator. Reduces fraction if possible.
 // Returns an empty fraction (0/1) if d is less than 1.
 func NewFraction(n, d int) *Fraction {
 	f := new(Fraction)

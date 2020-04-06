@@ -52,6 +52,8 @@ Provides a struct to store fractions and provides mathmatical and conversion met
 
 	go get github.com/icwells/go-tools/fraction  
 
+[![GoDoc](https://godoc.org/github.com/icwells/go-tools/fraction?status.svg)](https://godoc.org/github.com/icwells/go-tools/fraction)  
+
 ## iotools  
 Wraps common file/path functions with error handling and provides basic input/output functions.  
 
