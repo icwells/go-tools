@@ -28,6 +28,11 @@ func NewFraction(n, d int) *Fraction {
 	return f
 }
 
+// Zero returns an empty fraction equal to 0/1.
+func Zero() *Fraction {
+	return NewFraction(0, 1)
+}
+
 // greatestCommonDenominator calculates the gratest common denominator of n and d using Euchlid's algorithm.
 func (f *Fraction) greatestCommonDenominator(n, d int) float64 {
 	n = int(math.Abs(float64(n)))
@@ -110,7 +115,7 @@ func (f *Fraction) Subtract(v *Fraction) *Fraction {
 
 // SubtractInt subtracts n/d from f. Returns the absolute value of the result if abs is true.
 func (f *Fraction) SubtractInt(n, d int, abs bool) *Fraction {
-	return f.SubtractFloat(float64(n) / float64(d), abs)
+	return f.SubtractFloat(float64(n)/float64(d), abs)
 }
 
 // SubtractFloat subtracts a floating point number from f. Returns the absolute value of the result if abs is true.
