@@ -59,7 +59,7 @@ func FromFloat(n float64) *Fraction {
 }
 
 // Copy returns a deep copy of f.
-func (f *Fraction) Copy(v *Fraction) *Fraction {
+func (f *Fraction) Copy() *Fraction {
 	return NewFraction(f.Numerator, f.Denominator)
 }
 
@@ -107,9 +107,12 @@ func (f *Fraction) AddFloat(n float64) *Fraction {
 	return FromFloat(f.Float() + n)
 }
 
-// Subtract subtracts a fraction from f.
-func (f *Fraction) Subtract(v *Fraction) *Fraction {
+// Subtract subtracts a fraction from f. Returns the absolute value of the result if abs is true.
+func (f *Fraction) Subtract(v *Fraction, abs bool) *Fraction {
 	n := f.Numerator*v.Denominator - v.Numerator*f.Denominator
+	if abs {
+		n = int(math.Abs(float64(n)))
+	}
 	return NewFraction(n, f.Denominator*v.Denominator)
 }
 

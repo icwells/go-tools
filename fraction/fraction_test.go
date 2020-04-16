@@ -23,7 +23,7 @@ func TestFraction(t *testing.T) {
 		if c.String() != "37/84" {
 			t.Errorf("%s + %s does not equal 37/84.", a.String(), b.String())
 		}
-		c = a.Subtract(b)
+		c = a.Subtract(b, false)
 		if c.String() != "19/84" {
 			t.Errorf("%s - %s does not equal 19/84.", a.String(), b.String())
 		}
