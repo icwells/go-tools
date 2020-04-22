@@ -93,6 +93,11 @@ func (f *Fraction) Less(v *Fraction) bool {
 
 // Add adds a fraction to f.
 func (f *Fraction) Add(v *Fraction) *Fraction {
+	if f.Numerator == 0 {
+		return NewFraction(v.Numerator, v.Denominator)
+	} else if v.Numerator == 0 {
+		return NewFraction(f.Numerator, f.Denominator)
+	}
 	n := f.Numerator*v.Denominator + v.Numerator*f.Denominator
 	return NewFraction(n, f.Denominator*v.Denominator)
 }
@@ -109,6 +114,11 @@ func (f *Fraction) AddFloat(n float64) *Fraction {
 
 // Subtract subtracts a fraction from f. Returns the absolute value of the result if abs is true.
 func (f *Fraction) Subtract(v *Fraction, abs bool) *Fraction {
+	if f.Numerator == 0 {
+		return NewFraction(v.Numerator, v.Denominator)
+	} else if v.Numerator == 0 {
+		return NewFraction(f.Numerator, f.Denominator)
+	}
 	n := f.Numerator*v.Denominator - v.Numerator*f.Denominator
 	if abs {
 		n = int(math.Abs(float64(n)))

@@ -39,5 +39,8 @@ func TestFraction(t *testing.T) {
 		if c.String() != "-1/3" {
 			t.Errorf("%s * %s does not equal -1/3.", a.String(), b.String())
 		}
+		if !a.Add(Zero()).Equals(a) {
+			t.Error("Addition of 0 does not return original value.")
+		}
 	}
 }
