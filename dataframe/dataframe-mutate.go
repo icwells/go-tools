@@ -2,8 +2,30 @@
 
 package dataframe
 
+import (
+	"fmt"
+)
+
+// Extend appends rows from n to the current dataframe. Rows with redundant index values will be skipped.
+func (d *Dataframe) Extend(n *Dataframe) error {
+	if d.ncol != n.ncol {
+		return fmt.Errorf("New dataframe width %d does not equal width of parent database %d.", n.ncol, d.ncol)
+	}
+	if n.col >= 0 {
+		for k := range n.Index {
+			row, _ := n.GetRow(k)
+			d.appendRow(k, row)
+		}
+	} else {
+		for _, i := range n.Rows {
+			d.appendRow("", i)
+		}
+	}
+	return nil
+}
+
+// Deletes given entry from index/header and decrements higher values
 func (d *Dataframe) decrememntMap(m map[string]int, n int) map[string]int {
-	// Deletes given entry from index/header and decrements higher values
 	for k, v := range m {
 		if v > n {
 			m[k]--

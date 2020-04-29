@@ -38,20 +38,29 @@ func (d *Dataframe) subsetRow(row []string) (string, []string) {
 	return index, ret
 }
 
+// appendRow adds row to Rows and index to indeces. Returns an error if index is redundant.
+func (d *Dataframe) appendRow(index string, row []string) error {
+	var err error
+	if index != "" {
+		if _, ex := d.Index[index]; !ex {
+			d.Index[index] = d.nrow
+		} else {
+			err = fmt.Errorf("Value %s already found in index", index)
+		}
+	}
+	if err == nil {
+		d.Rows = append(d.Rows, row)
+		d.nrow++
+	}
+	return err
+}
+
 // AddRow adds a string slice to dataframe and stores the index value in Index if using.
 func (d *Dataframe) AddRow(row []string) error {
 	var err error
 	index, r := d.subsetRow(row)
 	if len(r) == d.ncol {
-		d.Rows = append(d.Rows, r)
-		if index != "" {
-			if _, ex := d.Index[index]; !ex {
-				d.Index[index] = d.nrow
-			} else {
-				err = fmt.Errorf("Value %s already found in index", index)
-			}
-		}
-		d.nrow++
+		err = d.appendRow(index, r)
 	} else {
 		err = fmt.Errorf("Row length %d does not equal number of of columns %d", len(r), d.ncol)
 	}
@@ -82,7 +91,7 @@ func (d *Dataframe) SetHeader(row []string) error {
 }
 
 func (d *Dataframe) setIndexColumn(column interface{}) error {
-	// Assigns column tp d.col/d.iname
+	// Assigns column to d.col/d.iname
 	var err error
 	switch i := column.(type) {
 	case string:
