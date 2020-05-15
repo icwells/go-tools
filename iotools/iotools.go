@@ -202,7 +202,6 @@ func ReadFile(infile string, header bool) ([][]string, map[string]int) {
 		}
 		if d == "" {
 			s = append(s, line)
-			fmt.Println(s)
 		} else {
 			s = strings.Split(line, d)
 		}
