@@ -157,9 +157,10 @@ func GetHeader(row []string) map[string]int {
 	return ret
 }
 
-// GetDelim returns delimiter (tab, comma, or space) from a text file.
-func GetDelim(header string) string {
+// GetDelim returns delimiter (tab, comma, or space) from a text file. Returns an error if delimiter cannot be found.
+func GetDelim(header string) (string, error) {
 	var d string
+	var err error
 	found := false
 	for _, i := range []string{"\t", ",", " "} {
 		if strings.Contains(header, i) == true {
@@ -169,9 +170,9 @@ func GetDelim(header string) string {
 		}
 	}
 	if found == false {
-		fmt.Print("\n\t[Error] Cannot determine delimeter. Exiting.\n\n")
+		err = fmt.Errorf("[Warning] Cannot determine delimeter.")
 	}
-	return d
+	return d, err
 }
 
 // ReadFile reads in compressed and uncompressed text files as a two dimensional slice of strings and the header as a map of indeces.
@@ -179,6 +180,7 @@ func ReadFile(infile string, header bool) ([][]string, map[string]int) {
 	var d string
 	var h map[string]int
 	var ret [][]string
+	first := true
 	if !Exists(infile) {
 		fmt.Printf("\n\t[Error] Input file %s not found. Exiting.\n\n", infile)
 		os.Exit(1)
@@ -187,11 +189,23 @@ func ReadFile(infile string, header bool) ([][]string, map[string]int) {
 	defer f.Close()
 	input := GetScanner(f)
 	for input.Scan() {
+		var s []string
 		line := strings.TrimSpace(string(input.Text()))
-		if d == "" {
-			d = GetDelim(line)
+		if first {
+			var err error
+			d, err = GetDelim(line)
+			if err != nil {
+				fmt.Println(err)
+				d = ""
+			}
+			first = false
 		}
-		s := strings.Split(line, d)
+		if d == "" {
+			s = append(s, line)
+			fmt.Println(s)
+		} else {
+			s = strings.Split(line, d)
+		}
 		if !header {
 			for idx, i := range s {
 				s[idx] = strings.TrimSpace(i)

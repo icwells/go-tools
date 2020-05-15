@@ -87,7 +87,7 @@ func TestGetDelim(t *testing.T) {
 			scanner := GetScanner(f)
 			for scanner.Scan() {
 				if first == true {
-					actual := GetDelim(string(scanner.Text()))
+					actual, _ := GetDelim(string(scanner.Text()))
 					if actual != i.delim {
 						msg := fmt.Sprintf("Delimiter for %s identified as %s", i.file, i.delim)
 						t.Error(msg)
