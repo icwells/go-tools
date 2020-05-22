@@ -6,6 +6,33 @@ import (
 	"fmt"
 )
 
+// Compare returns an error if target dataframe is not equal to d (for testing).
+func (d *Dataframe) Compare(n *Dataframe) error {
+	// Compares output of equivalent tables
+	var err error
+	nc, nr := n.Dimensions()
+	dc, dr := d.Dimensions()
+	if nc != dc && nr != dr {
+		err = fmt.Errorf("Target dataframe dimensions [%d, %d] do not equal original: [%d, %d]", nc, nr, dc, dr)
+	} else {
+		for key := range n.Index {
+			for k := range n.Header {
+				a, _ := n.GetCell(key, k)
+				e, _ := d.GetCell(key, k)
+				if a != e {
+					// Make sure error is not due to floating point precision
+					af, aerr := n.GetCellFloat(key, k)
+					ef, eerr := n.GetCellFloat(key, k)
+					if eerr != nil || aerr != nil || af != ef {
+						err = fmt.Errorf("%s-%s: Actual value %s does not equal expected: %s", key, k, a, e)
+					}
+				}
+			}
+		}
+	}
+	return err
+}
+
 // Extend appends rows from n to the current dataframe. Rows with redundant index values will be skipped.
 func (d *Dataframe) Extend(n *Dataframe) error {
 	if d.ncol != n.ncol {
