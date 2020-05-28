@@ -67,6 +67,18 @@ func (d *Dataframe) AddRow(row []string) error {
 	return err
 }
 
+// addRows adds a slice of rows to dataframe.
+func (d *Dataframe) addRows(rows [][]string) error {
+	var err error
+	for _, i := range rows {
+		err = d.AddRow(i)
+		if err != nil {
+			break
+		}
+	}
+	return err
+}
+
 // SetHeader converts the given row to header map.
 func (d *Dataframe) SetHeader(row []string) error {
 	var err error
@@ -115,20 +127,31 @@ func NewDataFrame(column interface{}) (*Dataframe, error) {
 	return d, err
 }
 
+// FromSlice creates a new dataframe and loads data from the given slice. The first row is assumed to be the header.
+func FromSlice(rows [][]string, column interface{}) (*Dataframe, error) {
+	d, err := NewDataFrame(column)
+	if err == nil {
+		err = d.SetHeader(rows[0])
+		if err == nil {
+ 			err = d.addRows(rows[1:])
+		}
+	}
+	return d, err
+}
+
 // FromFile creates a dataframe and loads in data from the given input file. The first row is assumed to be the header.
 func FromFile(infile string, column interface{}) (*Dataframe, error) {
 	var tmp [][]string
 	d, err := NewDataFrame(column)
-	tmp, d.Header = iotools.ReadFile(infile, true)
-	d.ncol = len(d.Header)
-	if d.col >= 0 {
-		// Remove index column from header
-		err = d.SetHeader(d.GetHeader())
-	}
-	for _, i := range tmp {
-		err = d.AddRow(i)
-		if err != nil {
-			break
+	if err == nil {
+		tmp, d.Header = iotools.ReadFile(infile, true)
+		d.ncol = len(d.Header)
+		if d.col >= 0 {
+			// Remove index column from header
+			err = d.SetHeader(d.GetHeader())
+		}
+		if err == nil {
+ 			err = d.addRows(tmp)
 		}
 	}
 	return d, err
