@@ -133,7 +133,7 @@ func FromSlice(rows [][]string, column interface{}) (*Dataframe, error) {
 	if err == nil {
 		err = d.SetHeader(rows[0])
 		if err == nil {
- 			err = d.addRows(rows[1:])
+			err = d.addRows(rows[1:])
 		}
 	}
 	return d, err
@@ -151,7 +151,7 @@ func FromFile(infile string, column interface{}) (*Dataframe, error) {
 			err = d.SetHeader(d.GetHeader())
 		}
 		if err == nil {
- 			err = d.addRows(tmp)
+			err = d.addRows(tmp)
 		}
 	}
 	return d, err

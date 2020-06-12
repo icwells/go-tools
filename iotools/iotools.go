@@ -6,27 +6,10 @@ import (
 	"bufio"
 	"compress/gzip"
 	"fmt"
-	"go/build"
 	"io"
 	"os"
-	"path/filepath"
 	"strings"
 )
-
-// CheckError returns true if err is nil; otherwise, if code is 0 it prints a warning and returns false.
-// If code is not 0, it prints an error formatted with msg and exits with code.
-func CheckError(msg string, err error, code int) bool {
-	ret := false
-	if err == nil {
-		ret = true
-	} else if code == 0 {
-		fmt.Fprintf(os.Stderr, "\t[Warning] %s: %v\n", msg, err)
-	} else {
-		fmt.Fprintf(os.Stderr, "\n\t[ERROR] %s: %v\n\n", msg, err)
-		os.Exit(code)
-	}
-	return ret
-}
 
 // OpenFile opens the file at the given file path and returns a file stream.
 // It will exit if it encounters an error.
@@ -73,147 +56,80 @@ func GetScanner(f *os.File) *bufio.Scanner {
 	return scanner
 }
 
-// Exists seturns true if the given file or directory exists.
-func Exists(path string) bool {
-	ret := true
-	_, err := os.Stat(path)
-	if err != nil {
-		ret = false
-	}
-	return ret
-}
-
-// GetGOPATH returns gopath environent environment variable.
-func GetGOPATH() string {
-	gopath := os.Getenv("GOPATH")
-	if gopath == "" {
-		gopath = build.Default.GOPATH
-	}
-	if Exists(gopath) == false {
-		fmt.Print("\n\t[Error] Cannot determine GOPATH. Exiting.\n\n")
-		os.Exit(10)
-	}
-	return gopath
-}
-
-// FormatPath returns path name with trailing slash (os.PathSeparator) and makes the directory if makenew is true.
-func FormatPath(path string, makenew bool) (string, bool) {
-	if path[len(path)-1] != os.PathSeparator {
-		path = path + string(os.PathSeparator)
-	}
-	ex := Exists(path)
-	if makenew == true {
-		if ex == false {
-			err := os.MkdirAll(path, os.ModePerm)
-			if err == nil {
-				// Change value of ex if mkdir was successful
-				ex = true
-			}
-		}
-	}
-	return path, ex
-}
-
-// GetExt returns the file extension (everthing after the last period) from file.
-func GetExt(file string) string {
-	return strings.Replace(filepath.Ext(file), ".", "", 1)
-}
-
-// GetFileName returns the base name (everything between the final slash and first period) from file.
-func GetFileName(file string) string {
-	ret := ""
-	sep := string(os.PathSeparator)
-	if strings.Contains(file, ".") == true && strings.Contains(file, sep) == true {
-		// Index slash first in case there is a period in path
-		tmp := file[strings.LastIndex(file, sep)+1:]
-		idx := strings.Index(tmp, ".")
-		if idx >= 0 {
-			ret = tmp[:idx]
-		}
-	}
-	return ret
-}
-
-// GetParent returns name of parent directory from path.
-func GetParent(path string) string {
-	if strings.Contains(path, ".") {
-		// Drop file name
-		path = filepath.Dir(path)
-	}
-	if path[len(path)-1] == os.PathSeparator {
-		// Drop trailing slash
-		path = path[:len(path)-1]
-	}
-	idx := strings.LastIndex(path, string(os.PathSeparator)) + 1
-	return path[idx:]
-}
-
-// GetHeader returns a map of header names to indeces.
-func GetHeader(row []string) map[string]int {
-	ret := make(map[string]int)
-	for idx, i := range row {
-		ret[i] = idx
-	}
-	return ret
-}
-
-// GetDelim returns delimiter (tab, comma, or space) from a text file. Returns an error if delimiter cannot be found.
-func GetDelim(header string) (string, error) {
-	var d string
-	var err error
-	found := false
-	for _, i := range []string{"\t", ",", " "} {
-		if strings.Contains(header, i) == true {
-			d = i
-			found = true
-			break
-		}
-	}
-	if found == false {
-		err = fmt.Errorf("[Warning] Cannot determine delimeter.")
-	}
-	return d, err
-}
-
-// ReadFile reads in compressed and uncompressed text files as a two dimensional slice of strings and the header as a map of indeces.
-func ReadFile(infile string, header bool) ([][]string, map[string]int) {
-	var d string
-	var h map[string]int
-	var ret [][]string
-	first := true
+// chekcFile exists if file does not exist.
+func checkFile(infile string) {
 	if !Exists(infile) {
 		fmt.Printf("\n\t[Error] Input file %s not found. Exiting.\n\n", infile)
 		os.Exit(1)
 	}
+}
+
+// setHeader returns the header and delimiter from the input file.
+func setHeader(infile string, header bool) (map[string]int, string) {
+	var d string
+	var h map[string]int
 	f := OpenFile(infile)
 	defer f.Close()
 	input := GetScanner(f)
 	for input.Scan() {
-		var s []string
+		// Get header and delimiter from first line
 		line := strings.TrimSpace(string(input.Text()))
-		if first {
-			var err error
-			d, err = GetDelim(line)
-			if err != nil {
-				fmt.Println(err)
-				d = ""
+		var err error
+		d, err = GetDelim(line)
+		if err != nil {
+			fmt.Println(err)
+			d = ""
+		}
+		if header {
+			h = GetHeader(strings.Split(line, d))
+		}
+		break
+	}
+	return h, d
+}
+
+// YieldFile reads compressed and uncompressed text files and returns the header as a map of indeces and the lines as an iterable channel of string slices.
+// E.G. reader, header := iotools.YieldFile(infile, true)
+//      for i := range reader { ...
+func YieldFile(infile string, header bool) (<-chan []string, map[string]int) {
+	var h map[string]int
+	ch := make(chan []string)
+	checkFile(infile)
+	h, d := setHeader(infile, header)
+	go func() {
+		first := true
+		f := OpenFile(infile)
+		defer f.Close()
+		input := GetScanner(f)
+		for input.Scan() {
+			if !first || !header {
+				var s []string
+				line := strings.TrimSpace(string(input.Text()))
+				if d == "" {
+					s = append(s, line)
+				} else {
+					s = strings.Split(line, d)
+				}
+				for idx, i := range s {
+					s[idx] = strings.TrimSpace(i)
+				}
+				ch <- s
+			} else {
+				// Skip first line
+				first = false
 			}
-			first = false
 		}
-		if d == "" {
-			s = append(s, line)
-		} else {
-			s = strings.Split(line, d)
-		}
-		if !header {
-			for idx, i := range s {
-				s[idx] = strings.TrimSpace(i)
-			}
-			ret = append(ret, s)
-		} else {
-			h = GetHeader(s)
-			header = false
-		}
+		close(ch)
+	}()
+	return ch, h
+}
+
+// ReadFile reads in compressed and uncompressed text files as a two dimensional slice of strings and the header as a map of indeces.
+func ReadFile(infile string, header bool) ([][]string, map[string]int) {
+	var ret [][]string
+	reader, h := YieldFile(infile, header)
+	for i := range reader {
+		ret = append(ret, i)
 	}
 	return ret, h
 }

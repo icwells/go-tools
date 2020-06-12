@@ -4,6 +4,7 @@ package iotools
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -96,6 +97,40 @@ func TestGetDelim(t *testing.T) {
 					break
 				}
 			}
+		}
+	}
+}
+
+func testSlice() [][]string {
+	return [][]string {
+		{"Sex", "Age", "Castrated", "ID", "Species", "Date", "Comments", "MassPresent", "Necropsy", "Metastasis", "TumorType", "Location", "Primary", "Malignant", "Service", "Account", "Submitter"},
+		{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"},
+		{"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"},
+	}
+}
+
+func TestYieldFile(t *testing.T) {
+	var idx int
+	exp := testSlice()
+	act, _ := YieldFile("testData/test.csv", false)
+	for i := range act {
+		a := strings.Join(i, ",")
+		e := strings.Join(exp[idx], ",")
+		if a != e {
+			t.Errorf("Actual line %s does not equal expected: %s", a, e)
+		}
+		idx++
+	}
+}
+
+func TestReadFile(t *testing.T) {
+	exp := testSlice()
+	act, _ := ReadFile("testData/test.csv", false)
+	for idx, i := range act {
+		a := strings.Join(i, ",")
+		e := strings.Join(exp[idx], ",")
+		if a != e {
+			t.Errorf("Actual line %s does not equal expected: %s", a, e)
 		}
 	}
 }
