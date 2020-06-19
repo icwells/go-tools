@@ -3,24 +3,32 @@
 package dataframe
 
 import (
-	"errors"
 	"fmt"
 )
 
-// RenameColumn changes the name of column o to n. Returns an error if o is not found.
-func (d *Dataframe) RenameColumn(o, n string) error {
+func (d *Dataframe) renameKey(m map[string]int, o, n, name string) error {
 	var err error
 	if len(n) == 0 {
-		err = errors.New("New column name is empty.")
-	} else if _, ex := d.Header[n]; ex {
-		err = fmt.Errorf("Column %s is already present in header.", n)
-	} else if v, ex := d.Header[o]; ex {
-		delete(d.Header, o)
-		d.Header[n] = v
+		err = fmt.Errorf("New %s name is empty.", name)
+	} else if _, ex := m[n]; ex {
+		err = fmt.Errorf("%s %s is already present in header.", name, n)
+	} else if v, ex := m[o]; ex {
+		delete(m, o)
+		m[n] = v
 	} else {
-		err = fmt.Errorf("Column %s was not found in header.", o)
+		err = fmt.Errorf("%s %s was not found in header.", name, o)
 	}
 	return err
+}
+
+// RenameColumn changes the name of column o to n. Returns an error if o is not found.
+func (d *Dataframe) RenameColumn(o, n string) error {
+	return d.renameKey(d.Header, o, n, "Column")
+}
+
+// RenameRow changes the name of row o to n. Returns an error if o is not found.
+func (d *Dataframe) RenameRow(o, n string) error {
+	return d.renameKey(d.Index, o, n, "Row")
 }
 
 // Compare returns an error if target dataframe is not equal to d (for testing).
