@@ -102,7 +102,7 @@ func TestGetDelim(t *testing.T) {
 }
 
 func testSlice() [][]string {
-	return [][]string {
+	return [][]string{
 		{"Sex", "Age", "Castrated", "ID", "Species", "Date", "Comments", "MassPresent", "Necropsy", "Metastasis", "TumorType", "Location", "Primary", "Malignant", "Service", "Account", "Submitter"},
 		{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"},
 		{"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"},

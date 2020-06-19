@@ -3,8 +3,25 @@
 package dataframe
 
 import (
+	"errors"
 	"fmt"
 )
+
+// RenameColumn changes the name of column o to n. Returns an error if o is not found.
+func (d *Dataframe) RenameColumn(o, n string) error {
+	var err error
+	if len(n) == 0 {
+		err = errors.New("New column name is empty.")
+	} else if _, ex := d.Header[n]; ex {
+		err = fmt.Errorf("Column %s is already present in header.", n)
+	} else if v, ex := d.Header[o]; ex {
+		delete(d.Header, o)
+		d.Header[n] = v
+	} else {
+		err = fmt.Errorf("Column %s was not found in header.", o)
+	}
+	return err
+}
 
 // Compare returns an error if target dataframe is not equal to d (for testing).
 func (d *Dataframe) Compare(n *Dataframe) error {
