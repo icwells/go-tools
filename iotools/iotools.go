@@ -134,15 +134,35 @@ func ReadFile(infile string, header bool) ([][]string, map[string]int) {
 	return ret, h
 }
 
-// WriteToCSV writes a string header and a two dimensional slice of strings to csv.
-func WriteToCSV(outfile, header string, results [][]string) {
-	out := CreateFile(outfile)
-	defer out.Close()
-	_, err := out.WriteString(header + "\n")
-	_ = CheckError(fmt.Sprintf("Writing header to %s", outfile), err, 0)
+// Gzip compresses infile to same directory. Adds '.gz' extension.
+func Gzip(outfile, header string, results [][]string) {
+	f := CreateFile(outfile)
+	defer f.Close()
+	w := gzip.NewWriter(f)
+	defer w.Close()
+	// Write bytes in compressed form to the file.
+	w.Write([]byte(header))
 	for _, i := range results {
-		// Write comma seperated items to file
-		_, err = out.WriteString(strings.Join(i, ",") + "\n")
+		w.Write([]byte(strings.Join(i, ",") + "\n"))
+	}
+}
+
+// WriteToCSV writes a string header and a two dimensional slice of strings to csv. Gzips file if last three characters of file name are '.gz'.
+func WriteToCSV(outfile, header string, results [][]string) {
+	if header[len(header)-1] != '\n' {
+		header += "\n"
+	}
+	if strings.Contains(outfile, ".gz") {
+		Gzip(outfile, header, results)
+	} else {
+		out := CreateFile(outfile)
+		defer out.Close()
+		_, err := out.WriteString(header)
 		_ = CheckError(fmt.Sprintf("Writing header to %s", outfile), err, 0)
+		for _, i := range results {
+			// Write comma seperated items to file
+			_, err = out.WriteString(strings.Join(i, ",") + "\n")
+			_ = CheckError(fmt.Sprintf("Writing results to %s", outfile), err, 0)
+		}
 	}
 }
