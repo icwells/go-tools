@@ -89,7 +89,7 @@ func setHeader(infile string, header bool) (map[string]int, string) {
 }
 
 // YieldFile reads compressed and uncompressed text files and returns the header as a map of indeces and the lines as an iterable channel of string slices.
-// E.G. reader, header := iotools.YieldFile(infile, true)
+//		reader, header := iotools.YieldFile(infile, true)
 //      for i := range reader { ...
 func YieldFile(infile string, header bool) (<-chan []string, map[string]int) {
 	var h map[string]int
