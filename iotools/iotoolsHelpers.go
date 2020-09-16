@@ -109,19 +109,19 @@ func GetHeader(row []string) map[string]int {
 	return ret
 }
 
-// GetDelim returns delimiter (tab, comma, or space) from a text file. Returns an error if delimiter cannot be found.
+// GetDelim returns delimiter (tab, comma, pipe, semicolon, colon, or space) from a text file. Returns an error if delimiter cannot be found.
 func GetDelim(header string) (string, error) {
 	var d string
 	var err error
-	found := false
-	for _, i := range []string{"\t", ",", " "} {
-		if strings.Contains(header, i) == true {
+	var max int
+	for _, i := range []string{"\t", ",", "|", ";", ":", " "} {
+		count := strings.Count(header, i)
+		if count > max {
 			d = i
-			found = true
-			break
+			max = count
 		}
 	}
-	if found == false {
+	if d == "" {
 		err = fmt.Errorf("[Warning] Cannot determine delimeter.")
 	}
 	return d, err
