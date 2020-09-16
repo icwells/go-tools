@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+var DELIM = []string{"\t", ",", "|", ";", ":", " "}
+
 // CheckError returns true if err is nil; otherwise, if code is 0 it prints a warning and returns false.
 // If code is not 0, it prints an error formatted with msg and exits with code.
 func CheckError(msg string, err error, code int) bool {
@@ -109,12 +111,45 @@ func GetHeader(row []string) map[string]int {
 	return ret
 }
 
-// GetDelim returns delimiter (tab, comma, pipe, semicolon, colon, or space) from a text file. Returns an error if delimiter cannot be found.
+// FindDelim returns delimiter (tab, comma, pipe, semicolon, colon, or space) from a text file. Returns an error if delimiter cannot be found.
+func FindDelim(infile string) (string, error) {
+	var count int
+	var lines []string
+	// Get first five lines
+	f := OpenFile(infile)
+	defer f.Close()
+	input := GetScanner(f)
+	for input.Scan() {
+		count++
+		lines = append(lines, strings.TrimSpace(string(input.Text())))
+		if count == 5 {
+			break
+		}
+	}
+	for _, d := range DELIM {
+		match := true
+		count = strings.Count(lines[0], d)
+		if count > 0 {
+			for _, i := range lines[1:] {
+				if strings.Count(i, d) != count {
+					match = false
+					break
+				}
+			}
+			if match {
+				return d, nil
+			}
+		}
+	}
+	return "", fmt.Errorf("[Warning] Cannot determine delimeter.")
+}
+
+// GetDelim returns delimiter (tab, comma, pipe, semicolon, colon, or space) from a line of a text file. Returns an error if delimiter cannot be found.
 func GetDelim(header string) (string, error) {
 	var d string
 	var err error
 	var max int
-	for _, i := range []string{"\t", ",", "|", ";", ":", " "} {
+	for _, i := range DELIM {
 		count := strings.Count(header, i)
 		if count > max {
 			d = i

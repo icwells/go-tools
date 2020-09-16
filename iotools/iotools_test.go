@@ -3,7 +3,6 @@
 package iotools
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 )
@@ -34,8 +33,7 @@ func TestExists(t *testing.T) {
 	for _, i := range cases {
 		actual := Exists(i.file)
 		if actual != i.exists {
-			msg := fmt.Sprintf("%s incorrectely identified by Exists", i.file)
-			t.Error(msg)
+			t.Errorf("%s incorrectely identified by Exists", i.file)
 		}
 	}
 }
@@ -46,8 +44,7 @@ func TestGetExt(t *testing.T) {
 	for _, i := range cases {
 		actual := GetExt(i.file)
 		if actual != i.ext {
-			msg := fmt.Sprintf("Extension for %s identified as %s", i.file, actual)
-			t.Error(msg)
+			t.Errorf("Extension for %s identified as %s", i.file, actual)
 		}
 	}
 }
@@ -58,8 +55,7 @@ func TestGetFileName(t *testing.T) {
 	for _, i := range cases {
 		actual := GetFileName(i.file)
 		if actual != i.filename {
-			msg := fmt.Sprintf("Name for %s identified as %s", i.file, actual)
-			t.Error(msg)
+			t.Errorf("Name for %s identified as %s", i.file, actual)
 		}
 	}
 }
@@ -70,9 +66,21 @@ func TestGetParent(t *testing.T) {
 	for _, i := range cases {
 		actual := GetParent(i.file)
 		if actual != i.parent {
-			fmt.Println(actual, i.parent)
-			msg := fmt.Sprintf("Parent directory for %s identified as %s", i.file, i.parent)
-			t.Error(msg)
+			t.Errorf("Parent directory for %s identified as %s", i.file, actual)
+		}
+	}
+}
+
+func TestFindDelim(t *testing.T) {
+	// Tests FindDelim function
+	cases := newTestCases()
+	for _, i := range cases {
+		if i.exists {
+			act, _ := FindDelim(i.file)
+			if act != i.delim {
+				t.Errorf("Delimiter for %s identified as %s", i.file, act)
+				break
+			}
 		}
 	}
 }
@@ -90,8 +98,7 @@ func TestGetDelim(t *testing.T) {
 				if first == true {
 					actual, _ := GetDelim(string(scanner.Text()))
 					if actual != i.delim {
-						msg := fmt.Sprintf("Delimiter for %s identified as %s", i.file, i.delim)
-						t.Error(msg)
+						t.Errorf("Delimiter for %s identified as %s", i.file, actual)
 					}
 				} else {
 					break

@@ -66,24 +66,21 @@ func checkFile(infile string) {
 
 // setHeader returns the header and delimiter from the input file.
 func setHeader(infile string, header bool) (map[string]int, string) {
-	var d string
 	var h map[string]int
-	f := OpenFile(infile)
-	defer f.Close()
-	input := GetScanner(f)
-	for input.Scan() {
-		// Get header and delimiter from first line
-		line := strings.TrimSpace(string(input.Text()))
-		var err error
-		d, err = GetDelim(line)
-		if err != nil {
-			fmt.Println(err)
-			d = ""
-		}
-		if header {
+	d, err := FindDelim(infile)
+	if err != nil {
+		fmt.Println(err)
+	}
+	if header {
+		f := OpenFile(infile)
+		defer f.Close()
+		input := GetScanner(f)
+		for input.Scan() {
+			// Get header and delimiter from first line
+			line := strings.TrimSpace(string(input.Text()))
 			h = GetHeader(strings.Split(line, d))
+			break
 		}
-		break
 	}
 	return h, d
 }
@@ -97,12 +94,11 @@ func YieldFile(infile string, header bool) (<-chan []string, map[string]int) {
 	checkFile(infile)
 	h, d := setHeader(infile, header)
 	go func() {
-		first := true
 		f := OpenFile(infile)
 		defer f.Close()
 		input := GetScanner(f)
 		for input.Scan() {
-			if !first || !header {
+			if !header {
 				var s []string
 				line := strings.TrimSpace(string(input.Text()))
 				if d == "" {
@@ -116,7 +112,7 @@ func YieldFile(infile string, header bool) (<-chan []string, map[string]int) {
 				ch <- s
 			} else {
 				// Skip first line
-				first = false
+				header = false
 			}
 		}
 		close(ch)
