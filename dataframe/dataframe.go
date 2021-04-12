@@ -10,13 +10,24 @@ import (
 
 // Dataframe stores data as a two-dimensional string slice with header and index as maps or named indeces.
 type Dataframe struct {
-	Rows   [][]string
-	Header map[string]int
-	Index  map[string]int
-	iname  string
-	col    int
-	ncol   int
-	nrow   int
+	col      int
+	Header   map[string]int
+	iname    string
+	Index    map[string]int
+	metadata string
+	ncol     int
+	nrow     int
+	Rows     [][]string
+}
+
+// Stores metadata value.
+func (d *Dataframe) SetMetaData(v string) {
+	d.metadata = v
+}
+
+// Returns metadata value.
+func (d *Dataframe) GetMetaData() string {
+	return d.metadata
 }
 
 func (d *Dataframe) subsetRow(row []string) (string, []string) {
@@ -194,5 +205,9 @@ func (d *Dataframe) Print() {
 
 // ToCSV writes dataframe to csv with header and index inderted.
 func (d *Dataframe) ToCSV(outfile string) {
-	iotools.WriteToCSV(outfile, d.FormatHeader(","), d.ToSlice())
+	header := d.FormatHeader(",")
+	if d.metadata != "" {
+		header = fmt.Sprintf("%s\n%s", d.metadata, header)
+	}
+	iotools.WriteToCSV(outfile, header, d.ToSlice())
 }
