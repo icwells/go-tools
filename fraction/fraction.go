@@ -83,10 +83,22 @@ func (f *Fraction) Equals(v *Fraction) bool {
 
 // Less returns true if f is less than v.
 func (f *Fraction) Less(v *Fraction) bool {
-	if f.Float() < v.Float() {
-		return true
-	}
-	return false
+	return f.Float() < v.Float()
+}
+
+// LessOrEqual returns true if f is less than or equal to v.
+func (f *Fraction) LessOrEqual(v *Fraction) bool {
+	return f.Float() <= v.Float()
+}
+
+// Greater returns true if f is greater than v.
+func (f *Fraction) Greater(v *Fraction) bool {
+	return f.Float() > v.Float()
+}
+
+// GreaterOrEqual returns true if f is greater than or equal to v.
+func (f *Fraction) GreaterOrEqual(v *Fraction) bool {
+	return f.Float() >= v.Float()
 }
 
 //---------------Arithmetic Operations----------------------------------------
