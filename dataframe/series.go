@@ -85,6 +85,7 @@ func (d *Dataframe) Iterate() <-chan *Series {
 				ch <- d.ToSeries(idx)
 			}
 		}
+		close(ch)
 	}()
 	return ch
 }
