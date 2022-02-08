@@ -6,6 +6,15 @@ import (
 	"fmt"
 )
 
+// AddColumn adds a new column with the given name to the end of the dataframe and stores the given null value in each row.
+func (d *Dataframe) AddColumn(name, null string) {
+	d.Header[name] = d.ncol
+	d.ncol++
+	for _, i := range d.Rows {
+		i = append(i, null)
+	}
+}
+
 func (d *Dataframe) renameKey(m map[string]int, o, n, name string) error {
 	var err error
 	if len(n) == 0 {
