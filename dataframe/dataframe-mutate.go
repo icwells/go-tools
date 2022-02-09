@@ -10,8 +10,8 @@ import (
 func (d *Dataframe) AddColumn(name, null string) {
 	d.Header[name] = d.ncol
 	d.ncol++
-	for _, i := range d.Rows {
-		i = append(i, null)
+	for idx := range d.Rows {
+		d.Rows[idx] = append(d.Rows[idx], null)
 	}
 }
 
