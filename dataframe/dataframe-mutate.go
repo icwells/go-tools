@@ -138,3 +138,23 @@ func (d *Dataframe) DeleteColumn(col interface{}) error {
 	}
 	return err
 }
+
+// Clone returns a copy of the dataframe's structure. Specifically, it returns an empty dataframe with the same header and index column name.
+func (d *Dataframe) Clone() *Dataframe {
+	ret, _ := NewDataFrame(d.col)
+	ret.col = d.col
+	ret.iname = d.iname
+	ret.metadata = d.metadata
+	ret.ncol = d.ncol
+	for k, v := range d.Header {
+		ret.Header[k] = v
+	}
+	return ret
+}
+
+// Copy returns a deep copy of the dataframe.
+func (d *Dataframe) Copy() *Dataframe {
+	ret := d.Clone()
+	ret.addRows(d.ToSlice())
+	return ret
+}

@@ -9,6 +9,7 @@ import (
 )
 
 type Series struct {
+	col int
 	// Encapsulates error so it can be returned through channel
 	Error error
 	// Same as dataframe header
@@ -55,6 +56,22 @@ func (s *Series) GetCellFloat(col string) (float64, error) {
 	return ret, err
 }
 
+// ToSlice returns series a stirng slice and inserts index value if needed.
+func (s *Series) ToSlice() []string {
+	ret := s.Row
+	if s.col >= 0 {
+		if s.col == 0 {
+			ret = append([]string{s.Name}, ret...)
+		} else if s.col == len(s.Row)-1 {
+			ret = append(ret, s.Name)
+		} else {
+			head := append(ret[:s.col], s.Name)
+			ret = append(head, ret[s.col:]...)
+		}
+	}
+	return ret
+}
+
 // ToSeries returns row at given index to a series
 func (d *Dataframe) ToSeries(idx interface{}) *Series {
 	var r int
@@ -65,6 +82,7 @@ func (d *Dataframe) ToSeries(idx interface{}) *Series {
 		case string:
 			s.Name = string(i)
 		}
+		s.col = d.col
 		s.Header = d.Header
 		s.Index = r
 		s.Row = d.Rows[r]
@@ -72,7 +90,7 @@ func (d *Dataframe) ToSeries(idx interface{}) *Series {
 	return s
 }
 
-// Iterate returns each row with its index
+// Iterate returns each row as a series.
 func (d *Dataframe) Iterate() <-chan *Series {
 	ch := make(chan *Series)
 	go func() {
