@@ -56,6 +56,17 @@ func (s *Series) GetCellFloat(col string) (float64, error) {
 	return ret, err
 }
 
+// UpdateCell updates col to val. Returns error if column name is not in header.
+func (s *Series) UpdateCell(col, val string) error {
+	var err error
+	if v, ex := s.Header[col]; ex {
+		s.Row[v] = val
+	} else {
+		err = fmt.Errorf("Column name %s cannot be found in header", col)
+	}
+	return err
+}
+
 // ToSlice returns series a stirng slice and inserts index value if needed.
 func (s *Series) ToSlice() []string {
 	ret := s.Row
